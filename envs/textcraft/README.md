@@ -52,4 +52,4 @@ ggdrive:Early-Experience-Reproduce/data/textcraft_v2/
 - **Concurrency**: TextCraft's env-server is pure Python (no JVM), so multi-worker probing scales with Python thread/process overhead — no separate-process-per-server needed.
 - **Common re-implementation mistake**: treating "3 action verbs" as the action space. Per-state admissible actions number 5–30 because they combine with the current inventory and recipe list. IWM/SR alt sampling must enumerate this space, not pick from `{get, craft, inventory}`.
 
-For a full reproduction, take the pipeline scripts under `scripts/` in this env as a reference, install the AgentGym env-server package from upstream, and follow the modification strategy above.
+For a full reproduction, install the AgentGym env-server package from upstream and follow the modification strategy above.

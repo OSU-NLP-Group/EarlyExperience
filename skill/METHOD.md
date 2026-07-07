@@ -1,6 +1,6 @@
 # METHOD: Early Experience for Language Agents
 
-This is the distilled methods reference for the paper **"Agent Learning via Early Experience"** (arXiv:2510.08558, Zhang et al., 2025). All implementations in `envs/` must follow the definitions in this document. When in doubt, this document is the source of truth; the original PDF is in `docs/paper.pdf` for cross-reference.
+This is the distilled methods reference for the paper **"Agent Learning via Early Experience"** (arXiv:2510.08558, Zhang et al., 2025). The full paper PDF is included as `paper.pdf` for cross-reference. When in doubt, treat the paper as source of truth.
 
 ## 1. The Paradigm
 
@@ -34,7 +34,7 @@ L_IWM = - Σ over (s_i, a_i^j, s_i^j) ∈ D_rollout
 1. **Stage 1 (IWM warm-up):** train for ~1 epoch on `D_rollout` with the next-state prediction loss above.
 2. **Stage 2 (Imitation):** continue training on `D_expert` with the standard imitation learning loss `L_IL = - Σ log π_θ(a_i | s_i)`.
 
-Training itself is out of scope for this workspace — the two-stage description is here only so data producers know how the data is consumed downstream.
+Training itself is out of scope for this project — the two-stage description is here only so data producers know how the data is consumed downstream.
 
 **Data composition for SFT framework.**
 For each rollout triple, the SFT example is:
@@ -127,4 +127,4 @@ Do not generate reflections without grounding them in actual observed next state
 
 ## 8. Reference
 
-Zhang et al., "Agent Learning via Early Experience," arXiv:2510.08558, 2025. Full text at `docs/paper.pdf`.
+Zhang et al., "Agent Learning via Early Experience," arXiv:2510.08558, 2025. Full text at `paper.pdf`.

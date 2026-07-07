@@ -13,50 +13,50 @@ description: |
 
 # Early Experience Data Generation
 
-This skill governs how data generation for the early-experience paradigm is done across all environments in this workspace. Read this entire file before starting work in `envs/<env>/`.
+This skill governs how data generation for the early-experience paradigm is done across all environments in this project. Read this entire file before starting work in `envs/<env>/`.
 
-## What this workspace is for
+## What this project is for
 
-The workspace produces SFT-ready training data for the two methods defined in `docs/paper.pdf` and recapped in `docs/METHOD.md`:
+The project produces SFT-ready training data for the two methods defined in the paper (https://arxiv.org/abs/2510.08558) and recapped in `METHOD.md`:
 
 - **Implicit World Modeling (IWM)** — train the policy to predict the next state given the current state and an action.
 - **Self-Reflection (SR)** — train the policy to produce a chain-of-thought reasoning over expert vs alternative actions, then the expert action.
 
-The output of this workspace is JSONL files under `envs/<env>/data/sft/`. **Training itself is out of scope.** If a task requires running SFT, evaluating checkpoints, or tuning training hyperparameters, stop and escalate.
+The output of this project is JSONL files under `envs/<env>/data/sft/`. **Training itself is out of scope.** If a task requires running SFT, evaluating checkpoints, or tuning training hyperparameters, stop and escalate.
 
 ## Required reading order
 
 Before any work in `envs/<env>/`, read in this order:
 
-1. `docs/METHOD.md` — what IWM and SR actually are, and the reflection prompt template. This is the source of truth for the method.
-2. `docs/TEAM_GUIDE.md` — global rules: LLM choice (DeepSeek V4 Pro, thinking disabled), API usage, the pre-call gate, the filter approval protocol, the deployment checkpoint, version control, submodule policy.
-3. `.claude/skills/early-experience-data/method_recap.md` — short list of decisions where the right answer is non-obvious. Use as a runbook, not as a tutorial.
-4. `.claude/skills/early-experience-data/pitfalls.md` — accumulated gotchas from previous envs. Skim before each new env in case something carries over.
+1. `METHOD.md` — what IWM and SR actually are, and the reflection prompt template. This is the source of truth for the method.
+2. team conventions — global rules: LLM choice (DeepSeek V4 Pro, thinking disabled), API usage, the pre-call gate, the filter approval protocol, the deployment checkpoint, version control, submodule policy.
+3. `skill/method_recap.md` — short list of decisions where the right answer is non-obvious. Use as a runbook, not as a tutorial.
+4. `skill/pitfalls.md` — accumulated gotchas from previous envs. Skim before each new env in case something carries over.
 5. `envs/<env>/NOTES.md` if it exists — env-specific decisions and orientation already recorded.
 
 If any of these files is missing or empty, surface it as a question rather than guessing.
 
-**On conflicts between layers.** For workspace-wide mechanics (LLM choice, gates, version control, submodule policy, output layout shape), `TEAM_GUIDE.md` and this skill win. For **env-specific** content (state representation, K, sampling strategy, prompt extensions, filtering rationale, anything tied to one env's interface or paper section), the env's `NOTES.md` is closer to truth than the generic guidance here. **But never silently resolve a conflict.** If you notice that NOTES.md says one thing and SKILL.md / TEAM_GUIDE.md / METHOD.md says another, stop and surface the conflict to the user before proceeding — the usual outcome is that NOTES.md needs a correction, and the user will edit it.
+**On conflicts between layers.** For project-wide mechanics (LLM choice, gates, version control, submodule policy, output layout shape), team conventions and this skill win. For **env-specific** content (state representation, K, sampling strategy, prompt extensions, filtering rationale, anything tied to one env's interface or paper section), the env's `NOTES.md` is closer to truth than the generic guidance here. **But never silently resolve a conflict.** If you notice that NOTES.md says one thing and SKILL.md / team conventions / METHOD.md says another, stop and surface the conflict to the user before proceeding — the usual outcome is that NOTES.md needs a correction, and the user will edit it.
 
 ## Hard rules (non-negotiable)
 
 These override any user request short of an explicit override.
 
-1. **No LLM API call without confirmation.** Every batch — smoke or full, 5 samples or 50k — must go through the pre-call confirmation gate defined in `TEAM_GUIDE.md` §2. State what we're doing, how much data, and approximate token volume. Wait for explicit go-ahead. Silence is not consent.
+1. **No LLM API call without confirmation.** Every batch — smoke or full, 5 samples or 50k — must go through the pre-call confirmation gate defined in team conventions §2. State what we're doing, how much data, and approximate token volume. Wait for explicit go-ahead. Silence is not consent.
 
-2. **Default to not editing inside `envs/<env>/<upstream-name>/`.** Prefer external wrappers or config overrides from outside the submodule. If touching submodule internals is genuinely the simpler path, explain the reason to the user, get approval, and make the change. Mechanics live in `TEAM_GUIDE.md` §7.
+2. **Default to not editing inside `envs/<env>/<upstream-name>/`.** Prefer external wrappers or config overrides from outside the submodule. If touching submodule internals is genuinely the simpler path, explain the reason to the user, get approval, and make the change. Mechanics live in team conventions §7.
 
 3. **Env runs end-to-end before pipeline code is written.** For any new env: install per its README, run its own tests or a minimal `reset → step → done` loop, confirm it works. Pipeline code (rollout, reflection generation, SFT writers) does not get written until this gate passes. The point is to surface install/dependency/runtime issues before they get tangled with your own code.
 
 4. **Smoke before scale.** No full-scale rollout or reflection generation before a smoke run (CC chooses the size) has produced data that passes hand inspection of at least 5 samples.
 
-5. **Filter rules go through the approval protocol.** Default position for any new env is no filters. Any filter applied to data in `data/sft/` must go through the protocol in `TEAM_GUIDE.md` §3 — propose, quantify impact, wait for user approval, record in NOTES.md, then apply.
+5. **Filter rules go through the approval protocol.** Default position for any new env is no filters. Any filter applied to data in `data/sft/` must go through the protocol in team conventions §3 — propose, quantify impact, wait for user approval, record in NOTES.md, then apply.
 
-6. **Full-scale runs go through the deployment checkpoint.** Before transitioning from smoke to full scale on any env, run the deployment checkpoint in `TEAM_GUIDE.md` §5. Single message covering all the per-env decisions and projected costs; wait for explicit user go-ahead.
+6. **Full-scale runs go through the deployment checkpoint.** Before transitioning from smoke to full scale on any env, run the deployment checkpoint in team conventions §5. Single message covering all the per-env decisions and projected costs; wait for explicit user go-ahead.
 
-7. **Final SFT output layout is fixed in shape, not in count.** See "Output layout" below. The three SFT **categories** (expert / IWM / reflection), the filename prefix per category, the directory location, and the outer JSONL schema are not negotiable. Default is one file per category; produce more only when the env's standard pipeline (as captured in NOTES.md) prescribes multiple variants. This workspace targets the paper's standard pipeline per env, not ablations.
+7. **Final SFT output layout is fixed in shape, not in count.** See "Output layout" below. The three SFT **categories** (expert / IWM / reflection), the filename prefix per category, the directory location, and the outer JSONL schema are not negotiable. Default is one file per category; produce more only when the env's standard pipeline (as captured in NOTES.md) prescribes multiple variants. This project targets the paper's standard pipeline per env, not ablations.
 
-8. **No training code.** This workspace does not contain SFT scripts, RL loops, or evaluation harnesses. If asked to write training code, stop and escalate.
+8. **No training code.** This project does not contain SFT scripts, RL loops, or evaluation harnesses. If asked to write training code, stop and escalate.
 
 9. **SR reflection length is a per-env decision, confirmed with the user before any LLM batch.** Unconstrained, modern LLMs (DeepSeek V4 Pro and peers) emit ~500–1000 word reflections, with the longest cases also being the most pathological (model wrestling with itself, drifting to a different action). Workspace default: target 200–400 words with a soft cap around **500 words**, enforced **only through prompt instruction** — not via a `max_tokens` API limit. Hard token caps truncate mid-sentence and produce worse training data than overlong-but-complete reflections; rely on the prompt to nudge length, and accept the occasional outlier. Each env must surface its own length choice in `envs/<env>/NOTES.md` and have the user explicitly confirm it — sometimes a short-task env wants tighter (e.g. 200 target); sometimes a long-horizon complex-reasoning env wants more headroom.
 
@@ -129,24 +129,22 @@ Default to **stopping and asking** rather than guessing. The cost of a clarifica
 - Anything that requires editing inside a submodule.
 - Upstream URL, fork URL, or pinned commit when setting up a new env. The user provides these — never fetch from GitHub by guessing or invent a URL.
 
-Filters are not in this list because they have their own protocol (hard rule 5 → TEAM_GUIDE §3). Full-scale runs are not in this list because they have their own gate (hard rule 6 → TEAM_GUIDE §5).
+Filters are not in this list because they have their own protocol (hard rule 5 → team conventions). Full-scale runs are not in this list because they have their own gate (hard rule 6 → team conventions).
 
 ## File map quick reference
 
 ```
-docs/
-├── paper.pdf                    original paper
-├── METHOD.md                    method definitions (IWM, SR, formulas, prompt template)
-└── TEAM_GUIDE.md                global rules (LLM, API, submodules, gates, protocols)
-
-.claude/skills/early-experience-data/
+skill/
 ├── SKILL.md                     this file (router + output format)
+├── METHOD.md                    method definitions (IWM, SR, formulas, prompt template)
 ├── method_recap.md              short list of decisions easy to get wrong
-└── pitfalls.md                  accumulated gotchas from previous envs
+├── pitfalls.md                  accumulated gotchas from previous envs
+├── NOTES_TEMPLATE.md            skeleton for each env's NOTES.md
+└── paper.pdf                    original paper
 
 envs/<env>/
 ├── NOTES.md                     env-specific decisions, upstream pins, intermediate-artifact map
-├── <upstream-name>/             git submodule (default: don't edit; see TEAM_GUIDE §7)
+├── <upstream-name>/             upstream env repo (installed however its README says)
 ├── (env's own code + whatever the install path requires)
 └── data/
     ├── sft/                     final training-ready JSONL — three categories, ≥1 file each

@@ -20,7 +20,7 @@ Two concrete methods under this paradigm:
 
 This repo ships:
 
-- **A Claude Code skill** (`.claude/skills/early-experience-data/`) that captures the general methodology and pitfalls of generating EE data for any env.
+- **A skill guide** (`skill/`) capturing the general methodology, method mapping, and pitfalls of generating EE data for any env — designed to be consumed by a code agent (any flavor) as a workflow reference.
 - **Ten env-specific implementation notes** (`envs/<env>/`) with per-env modification strategies, data locations, and reproducibility notes.
 - **Pre-generated SFT data** (expert / IWM / reflection) on Google Drive for every env we've stabilized.
 
@@ -30,29 +30,29 @@ All SFT files (expert / IWM / reflection) are available on [huggingface](https:/
 
 ## Using the skill
 
-The Claude Code skill in this repo — [`.claude/skills/early-experience-data/`](.claude/skills/early-experience-data/) — captures the general workflow, method mapping, and pitfalls of generating EE data for a new env. To use it in your own project:
+The [`skill/`](skill/) directory contains three files — `SKILL.md` (workflow), `method_recap.md` (design decisions), `pitfalls.md` (accumulated gotchas) — that together specify how to produce early-experience data for a new env.
+
+To use with your code agent, copy the skill into your project and point the agent at `SKILL.md`:
 
 ```bash
-cp -r .claude/skills/early-experience-data /path/to/your/project/.claude/skills/
+cp -r skill /path/to/your/project/
 ```
 
-Then in any Claude Code session running in that project, ask about generating early-experience data for an env you're setting up — the skill auto-triggers and walks the agent through method mapping, alternative-action sampling design, reflection generation, and the common re-implementation pitfalls documented per env.
+Then instruct the agent: *"Read `skill/SKILL.md` before doing any early-experience data-generation work."* The skill walks the agent through method mapping, alternative-action sampling design, reflection generation, and the common re-implementation pitfalls.
 
 ## Main results
 
-*Main table to be finalized.*
+| Env | Model | IL | IWM | Δ vs IL | SR | Δ vs IL |
+|---|---|---:|---:|---:|---:|---:|
+| ALFWorld       | Qwen2.5 7B Instruct  | 58.6% | 68.8% | **+10.2%** | **74.2%** | **+15.6%** |
+| WebShop        | Qwen2.5 7B Instruct  | 39.1% | 48.4% | **+9.3%**  | **55.5%** | **+16.4%** |
+| BFCL           | Qwen2.5 7B Instruct  | 44.9% | **51.1%** | **+6.2%**  | 49.6% | +4.7% |
+| TravelPlanner  | Qwen2.5 7B Instruct  | 25.0% | 29.4% | **+4.4%**  | **30.0%** | **+5.0%** |
+| TextCraft      | Qwen2.5 7B Instruct  | 73.0% | **76.8%** | **+3.9%**  | 74.5% | +1.5% |
+| ScienceWorld   | Qwen2.5 7B Instruct  | 65.4% | **68.6%** | **+3.2%**  | 66.0% | +0.6% |
+| AppWorld       | Qwen2.5 14B Instruct | 43.7% | **59.7%** | **+16.0%** | 51.0% | +7.3% |
 
-| Env | IL | IWM | SR |
-|---|---:|---:|---:|
-| ALFWorld       | TBD | TBD | TBD |
-| WebShop        | TBD | TBD | TBD |
-| ScienceWorld   | TBD | TBD | TBD |
-| BFCLv3         | TBD | TBD | TBD |
-| TravelPlanner  | TBD | TBD | TBD |
-| TextCraft      | TBD | TBD | TBD |
-| AppWorld       | TBD | TBD | TBD |
-
-Note that this release uses a **unified training setup** across all envs — same base model, same optimizer, same effective batch and learning rate — which differs slightly from the per-env hyperparameters described in the paper's Appendix B. All numbers above are reported from the final checkpoint of a single one-shot training run (no ensembling, no re-runs).
+Note that this release uses a **unified training setup** across all envs — same base model class per env, same optimizer, same effective batch and learning rate — which differs slightly from the per-env hyperparameters described in the paper's Appendix B. All numbers above are the final checkpoint of a single one-shot training run (no ensembling, no re-runs).
 
 ## Environments
 

@@ -42,6 +42,6 @@ ggdrive:Early-Experience-Reproduce/data/alfworld/
 - **K for IWM**: all admissible alternatives at each state (typically 5–15). No sampling — exhaustive.
 - **K for SR**: 3 alternatives per state, chosen randomly from admissible.
 - **CoT preservation**: expert records carry `<think>...</think><action>...</action>` markup.
-- **Careful gotcha (documented in NOTES.md)**: naïve batched alt probing across parallel envs can silently drift each alternative onto a *different game's* state. Any re-implementation must verify state re-synchronization (e.g. by comparing pre-step observations across all K rollouts) before trusting IWM data.
+- **Careful gotcha**: naïve batched alt probing across parallel envs can silently drift each alternative onto a *different game's* state. Any re-implementation must verify state re-synchronization (e.g. by comparing pre-step observations across all K rollouts) before trusting IWM data.
 
-For a full reproduction, take the pipeline scripts under `scripts/` in this env as a reference, run against a fresh clone of upstream after applying the modification strategy above.
+For a full reproduction, follow the modification strategy above against a fresh clone of upstream.

@@ -54,4 +54,4 @@ ggdrive:Early-Experience-Reproduce/data/scienceworld_v2/
 - **Action canonicalization**: AgentGym's client adapter enforces specific surface forms (e.g. `drop` not `put down`, `wait1` for single-step wait). Any IWM/SR alt strings must match these forms so expert and rollout entries share a vocabulary.
 - **Server concurrency**: default is a single uvicorn process backed by one JVM instance. For real parallelism, run multiple `sciworld` servers on different ports and round-robin.
 
-For a full reproduction, take the pipeline scripts under `scripts/` in this env as a reference, install the AgentGym env-server package from upstream after applying the `/admissible_actions` endpoint patch described above, and follow the modification strategy.
+For a full reproduction, install the AgentGym env-server package from upstream, apply the `/admissible_actions` endpoint patch described above, and follow the modification strategy.

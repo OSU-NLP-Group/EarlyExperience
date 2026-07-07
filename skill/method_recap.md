@@ -1,6 +1,6 @@
 # Method Recap
 
-This is a short list of decisions where the right answer is non-obvious or runs against default coding instincts. Read `docs/METHOD.md` for the formal definitions and the reflection prompt template; read `docs/TEAM_GUIDE.md` for API access, retries, and the pre-call gate. This file only covers what's easy to get wrong.
+This is a short list of decisions where the right answer is non-obvious or runs against default coding instincts. Read `METHOD.md` for the formal definitions and the reflection prompt template; read team conventions for API access, retries, and the pre-call gate. This file only covers what's easy to get wrong.
 
 ## Find expert trajectories before generating them
 
@@ -76,10 +76,10 @@ Some environments have an action space so large that at any state there are effe
 At temperature 0.7+ with long-form output (reflection CoTs run 1.5k–3k chars), DeepSeek V4 Pro intermittently emits the same paragraph twice in a single response — observed ~4% rate in one batch. This is a known LLM-class failure mode (all major providers hit it occasionally), not a our-code bug, but DeepSeek doesn't suppress it automatically server-side.
 
 Mitigations, in order of cost:
-- Add `frequency_penalty=0.3` to the API call. Only effective with thinking disabled (TEAM_GUIDE §1.3 warns these sampling params are silently ignored when thinking is on — we always keep thinking off so this is fine).
+- Add `frequency_penalty=0.3` to the API call. Only effective with thinking disabled (team conventions warns these sampling params are silently ignored when thinking is on — we always keep thinking off so this is fine).
 - Post-hoc detector at the SFT-build step: if the first 100–150 chars of the CoT appear again in the second half, drop or re-roll. Cheap, near-zero false positives.
 - Both is the prudent combination.
 
 ---
 
-Use the available compute sensibly. A naive `for ... : client.chat.completions.create(...)` or `for ... : env.step(...)` loop is usually the first thing that comes to mind but rarely the right thing to ship — there's almost always free wall-clock on the table. What "sensibly" means here depends on the env's interface and the hardware actually available, and that's the agent's call. TEAM_GUIDE §1.4 and §4 are the engineering background.
+Use the available compute sensibly. A naive `for ... : client.chat.completions.create(...)` or `for ... : env.step(...)` loop is usually the first thing that comes to mind but rarely the right thing to ship — there's almost always free wall-clock on the table. What "sensibly" means here depends on the env's interface and the hardware actually available, and that's the agent's call. team conventions and §4 are the engineering background.

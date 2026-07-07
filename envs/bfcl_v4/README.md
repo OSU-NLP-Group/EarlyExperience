@@ -56,4 +56,4 @@ Both `text` and `fc` variants are provided so downstream training can pick the s
 - **Proposer / summarizer / reflection models**: DeepSeek V4 Flash (proposer, summarizer, args are schema-bound) / DeepSeek V4 Pro (reflection, needs more nuanced reasoning).
 - **Anti-leak vocabulary filter for SR**: post-hoc grep filter against words like "expert" / "selected" / "chosen" / "correct" / "best" / "optimal" / "preferred" and numbered alt labels ("Action 1", "Alternative #2"). Any SR pipeline should apply an equivalent filter.
 
-For a full reproduction, take the pipeline scripts under `scripts/` in this env as a reference, install the BFCL leaderboard package from upstream (pinned to the 2025-12-17 commit) in its own conda env, and follow the modification strategy above.
+For a full reproduction, install the BFCL leaderboard package from upstream (pinned to the 2025-12-17 commit) in its own conda env, and follow the modification strategy above.
