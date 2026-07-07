@@ -30,7 +30,9 @@ All SFT files (expert / IWM / reflection) are available on [huggingface](https:/
 
 ## Using the skill
 
-The [`skill/`](skill/) directory is a self-contained workflow guide for a code agent to generate early-experience SFT data (expert / IWM / reflection) for any agent env — see [`skill/README.md`](skill/README.md) for what's inside. Drop it into your project in one line and point the agent at `SKILL.md`:
+The [`skill/`](skill/) directory provides a code-agent skill that lets any agentic environment quickly adopt the early-experience training paradigm — both **Implicit World Modeling** and **Self-Reflection** (see [the paper](https://arxiv.org/pdf/2510.08558) for the method itself). More at [`skill/README.md`](skill/README.md).
+
+Drop it into your project in one line and point the agent at `SKILL.md`:
 
 ```bash
 git clone https://github.com/OSU-NLP-Group/EarlyExperience.git && cp -r EarlyExperience/skill /path/to/your/project/
