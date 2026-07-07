@@ -50,4 +50,4 @@ Both `full` and `balanced` IWM variants are provided so downstream training can 
 - **K for IWM**: the pipeline is designed so downstream K can be chosen at build time (data has ≥30 env-meaningful alternatives at 93.6% of states). `iwm_sft_balanced.jsonl` clips to a fixed per-state K.
 - **Server concurrency caveat**: AppWorld's server has no multi-tenancy (a global `world` object). Any parallel probing must launch one server process per worker — running K workers against a shared server silently races and corrupts state.
 
-For a full reproduction, take the pipeline scripts under `scripts/` in this env as a reference, run against a fresh clone of upstream after applying the modification strategy above, install the AppWorld SDK per its own README.
+For a full reproduction, install the AppWorld SDK per its own README and follow the modification strategy above against a fresh clone of upstream.

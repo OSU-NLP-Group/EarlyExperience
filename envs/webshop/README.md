@@ -47,4 +47,4 @@ ggdrive:Early-Experience-Reproduce/data/webshop_v2/
 - **State representation**: paper-formatted text rendering of the current WebShop page — same format the trained model sees at inference.
 - **Anti-leak vocabulary filter for SR**: same as other envs.
 
-For a full reproduction, take the pipeline scripts under `scripts/` in this env as a reference, install the verl-agent WebShop env package from upstream (including the search-engine index and product database bundled with it), and follow the modification strategy above.
+For a full reproduction, install the verl-agent WebShop env package from upstream (including the search-engine index and product database bundled with it), and follow the modification strategy above.

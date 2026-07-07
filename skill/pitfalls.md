@@ -24,7 +24,7 @@ Tends to be worth recording:
 Usually not worth recording here:
 
 - Generic engineering hygiene already covered by SKILL.md or
-  TEAM_GUIDE.md.
+  team conventions.
 - One-time mistakes with no general lesson.
 - Documented behaviors of an env that anyone reading the env's README
   would already know.
