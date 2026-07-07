@@ -66,7 +66,7 @@ E-commerce shopping env (paper §B.2). The agent handles instructions like *"fin
 
 ### BFCL v4 (multi-turn function calling) — [envs/bfcl_v4](envs/bfcl_v4/)
 
-Multi-turn function-calling benchmark (paper §B.3). Because sim state is pure-Python and `copy.deepcopy`-able, alternative-action probing is exceptionally cheap: no re-replay, no HTTP env spin-up. IWM uses `K=10` alt names sampled structurally from the involved sim classes, with one LLM call filling all K argument sets per state. See [envs/bfcl_v4/README.md](envs/bfcl_v4/README.md).
+Multi-turn function-calling benchmark (paper §B.3). Because sim state is pure-Python and `copy.deepcopy`-able, alternative-action probing needs no re-replay or HTTP env spin-up. IWM uses `K=10` alt names sampled structurally from the involved sim classes, with one LLM call filling all K argument sets per state. See [envs/bfcl_v4/README.md](envs/bfcl_v4/README.md).
 
 ### ScienceWorld — [envs/scienceworld](envs/scienceworld/)
 
@@ -78,11 +78,11 @@ Multi-day travel-planning env (paper §B.7). The whole plan is submitted in one 
 
 ### AppWorld — [envs/appworld](envs/appworld/)
 
-Free-form code-action agent env (not in paper). The agent writes Python that runs in a sandboxed REPL with access to mock apps (spotify, venmo, gmail, ...). Among the cleanest EE candidates in this release — expert data is free (via the AppWorld SDK's ground-truth programs), so IWM cost stays at just a proposer call per state. See [envs/appworld/README.md](envs/appworld/README.md).
+Free-form code-action agent env (not in paper). The agent writes Python that runs in a sandboxed REPL with access to mock apps (spotify, venmo, gmail, ...). Expert data comes from the AppWorld SDK's ground-truth programs (no LLM cost), so IWM cost is one proposer call per state plus K env probes. See [envs/appworld/README.md](envs/appworld/README.md).
 
 ### TextCraft — [envs/textcraft](envs/textcraft/)
 
-Text-based Minecraft-style crafting game (not in paper). Included as an extra env exercising the same EE recipe on a simpler action space. Admissible actions are entirely client-derivable from `(commands_list, inventory)` — no server-side patch needed. See [envs/textcraft/README.md](envs/textcraft/README.md).
+Text-based Minecraft-style crafting game (not in paper). Admissible actions are entirely client-derivable from `(commands_list, inventory)` — no server-side patch needed. See [envs/textcraft/README.md](envs/textcraft/README.md).
 
 ### Tau-Bench — [envs/tau-bench](envs/tau-bench/) 🚧
 

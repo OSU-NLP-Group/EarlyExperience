@@ -11,7 +11,7 @@ Free-form code-action agent env. The agent solves a natural-language supervisor 
 
 ## Modification strategy
 
-AppWorld is arguably the **cleanest EE candidate** because the expert trajectory comes from the SDK itself — every task ships with a ground-truth Python program that solves it, so we never pay LLM cost for expert data.
+The expert trajectory comes from the AppWorld SDK itself — every task ships with a ground-truth Python program that solves it, so we never pay LLM cost for expert data.
 
 Two conceptual pieces layered on top of the verl-agent AppWorld wrapper:
 

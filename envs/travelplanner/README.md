@@ -26,7 +26,7 @@ Three conceptual pieces layered on top of the paper gym:
 | Next state | rendered budget-delta + templated field-effect (no LLM) |
 | Reflection target | expert choice + LLM-authored monologue engaging with all K alt outcomes and the specific constraints in play |
 
-**Key insight for TravelPlanner**: unlike other envs where the alt pool is enumerable or LLM-proposed, here the alt pool must be **stratified** — random alts underweight constraint violations that only surface for specific combinations (wrong-city, insufficient-nights, cuisine-mismatch). The reflection prompt must also structurally include the "required checks" or the LLM silently drops them.
+**Key insight for TravelPlanner**: the alt pool must be **stratified** by constraint type — random alts underweight the violations that only surface for specific combinations (wrong-city, insufficient-nights, cuisine-mismatch). The reflection prompt must also structurally include the "required checks" or the LLM silently drops them.
 
 ## Data output
 
