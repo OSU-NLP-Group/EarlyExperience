@@ -27,10 +27,10 @@ The **key insight for ALFWorld** is that the action space is already enumerable,
 
 ## Data output
 
-Living on Google Drive (this repo does **not** vendor any SFT files):
+Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience):
 
 ```
-ggdrive:Early-Experience-Reproduce/data/alfworld/
+alfworld/
 ├── expert_sft.jsonl
 ├── iwm_sft.jsonl
 └── reflection_sft.jsonl

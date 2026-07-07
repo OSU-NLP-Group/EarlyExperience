@@ -1,6 +1,6 @@
 # Env-specific NOTES.md — Template
 
-`envs/<env>/NOTES.md` records the decisions, artifacts, and gotchas particular to one environment. It is the single source of truth for anything that is *not* generic across envs (which lives in `METHOD.md` / `method_recap.md` / `pitfalls.md` instead).
+A per-env `NOTES.md` file records the decisions, artifacts, and gotchas particular to one environment. It is the single source of truth for anything that is *not* generic across envs (which lives in `METHOD.md` / `method_recap.md` / `pitfalls.md` instead).
 
 Fill each section only if it applies to your env; delete the rest. The goal is orientation for the next reader, not exhaustive documentation.
 
@@ -8,7 +8,7 @@ Fill each section only if it applies to your env; delete the rest. The goal is o
 
 # `<Env Name>`
 
-> **Status**: recon / smoke / full-scale done, and any open decisions still pending.
+> **Status**: current stage (orientation / smoke tested / full-scale done) and any open decisions still pending.
 
 ## Env at a glance
 
@@ -49,7 +49,7 @@ Only what changed *relative to upstream*. High-level rationale, not code details
 
 ## Approved decisions
 
-Any decision that was made through the team's approval protocol — filter rules, deployment checkpoints, deviations from paper. Format: what was decided, when, and why.
+Any decision that was explicitly agreed upon with the user — filter rules, scale-up go-aheads, deviations from paper. Format: what was decided and why.
 
 ## Pipeline (in execution order)
 

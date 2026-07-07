@@ -33,10 +33,10 @@ Conceptual pieces layered on top:
 
 ## Data output
 
-Living on Google Drive (this repo does **not** vendor any SFT files):
+Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience) under `bfcl_v4/`:
 
 ```
-ggdrive:Early-Experience-Reproduce/data/bfcl_v4_v2/
+bfcl_v4/
 ├── expert_sft_text.jsonl        # paper-faithful plain-Python action format
 ├── expert_sft_fc.jsonl          # OpenAI FC schema variant
 ├── iwm_sft_text.jsonl
@@ -53,7 +53,7 @@ Both `text` and `fc` variants are provided so downstream training can pick the s
 - **Split**: 75/25 train/held-out by `case_id` with `random.seed(42)`. 3 OOD splits (`long_context`, `miss_func`, `miss_param`) never enter any SFT file.
 - **K for IWM**: 10 alt names per state (structurally satisfiable on every Base case).
 - **K for SR**: 3 alternatives per state.
-- **Proposer / summarizer / reflection models**: DeepSeek V4 Flash (proposer, summarizer, args are schema-bound) / DeepSeek V4 Pro (reflection, needs more nuanced reasoning).
+- **Proposer / summarizer / reflection generator**: paper-faithful is the base policy model itself. See `skill/SKILL.md` for how to choose the generator model for your own run.
 - **Anti-leak vocabulary filter for SR**: post-hoc grep filter against words like "expert" / "selected" / "chosen" / "correct" / "best" / "optimal" / "preferred" and numbered alt labels ("Action 1", "Alternative #2"). Any SR pipeline should apply an equivalent filter.
 
 For a full reproduction, install the BFCL leaderboard package from upstream (pinned to the 2025-12-17 commit) in its own conda env, and follow the modification strategy above.

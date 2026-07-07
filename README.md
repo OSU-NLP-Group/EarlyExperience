@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://arxiv.org/pdf/2510.08558"><img src="https://img.shields.io/badge/arXiv-2510.08558-b31b1b.svg" alt="arXiv"></a>
-  <a href="#"><img src="https://img.shields.io/badge/🤗_HuggingFace-Coming_Soon-yellow" alt="Hugging Face"></a>
+  <a href="https://huggingface.co/datasets/osunlp/early-experience"><img src="https://img.shields.io/badge/🤗_HuggingFace-Dataset-yellow" alt="Hugging Face Dataset"></a>
 </p>
 
 -----
@@ -21,12 +21,12 @@ Two concrete methods under this paradigm:
 This repo ships:
 
 - **A skill guide** (`skill/`) capturing the general methodology, method mapping, and pitfalls of generating EE data for any env — designed to be consumed by a code agent (any flavor) as a workflow reference.
-- **Ten env-specific implementation notes** (`envs/<env>/`) with per-env modification strategies, data locations, and reproducibility notes.
-- **Pre-generated SFT data** (expert / IWM / reflection) on Google Drive for every env we've stabilized.
+- **Ten env-specific implementation notes** (`envs/<env>/`) that serve two purposes: (1) enough detail to reproduce our numbers on the paper's envs, and (2) worked examples of what "porting a new agentic env into the EE framework" actually looks like. Anyone can pick up the skill and add their own env by following the same recipe.
+- **Pre-generated SFT data** (expert / IWM / reflection) on Hugging Face for every env in this release.
 
 ## Data
 
-All SFT files (expert / IWM / reflection) are available on [huggingface](https://huggingface.co/datasets/osunlp/early-experience):
+All SFT files (expert / IWM / reflection) are available on [huggingface](https://huggingface.co/datasets/osunlp/early-experience).
 
 ## Using the skill
 
@@ -52,11 +52,11 @@ Then instruct the agent: *"Read `skill/SKILL.md` before doing any early-experien
 | ScienceWorld   | Qwen2.5 7B Instruct  | 65.4% | **68.6%** | **+3.2%**  | 66.0% | +0.6% |
 | AppWorld       | Qwen2.5 14B Instruct | 43.7% | **59.7%** | **+16.0%** | 51.0% | +7.3% |
 
-Note that this release uses a **unified training setup** across all envs — same base model class per env, same optimizer, same effective batch and learning rate — which differs slightly from the per-env hyperparameters described in the paper's Appendix B. All numbers above are the final checkpoint of a single one-shot training run (no ensembling, no re-runs).
+> Note that this release uses a **unified training setup** across all envs — same base model class per env, same optimizer, same effective batch and learning rate — which differs slightly from the per-env hyperparameters described in the paper's Appendix B. All numbers above are the final checkpoint of a single one-shot training run (no ensembling, no re-runs).
 
 ## Environments
 
-Ten envs are represented in this release. Seven have been stabilized and validated end-to-end (data → training → eval). Three are marked TBD — data ships as provisional, but the training-eval loop is not yet closed.
+Ten envs in this release. Seven with the full loop shipped (data → training → eval); three more in progress.
 
 ### ALFWorld — [envs/alfworld](envs/alfworld/)
 
@@ -80,7 +80,7 @@ Multi-day travel-planning env (paper §B.7). The whole plan is submitted in one 
 
 ### WebArena — [envs/webarena](envs/webarena/) 🚧
 
-Realistic full-stack web-navigation env (paper §B.8). **Status: TBD.** Provisional data ships on Drive; expert side is sourced from the [Agent Data Protocol (ADP)](https://arxiv.org/abs/2510.07059) paper's 4 WebArena-relevant expert sources. See [envs/webarena/README.md](envs/webarena/README.md).
+Realistic full-stack web-navigation env (paper §B.8). **In progress.** Expert side is sourced from the [Agent Data Protocol (ADP)](https://arxiv.org/abs/2510.07059) paper's 4 WebArena-relevant expert sources. See [envs/webarena/README.md](envs/webarena/README.md).
 
 ### AppWorld — [envs/appworld](envs/appworld/)
 
@@ -97,7 +97,7 @@ For each env, the linked README describes:
 - The upstream env repo (with license and version pin).
 - Our high-level modification strategy — the *why* and *what* of the changes, not code-level detail. Enough to guide a reimplementation on your own fork.
 - The method mapping (how EE's expert / IWM alt / SR reflection concepts realize concretely in this env).
-- Data output locations on Google Drive.
+- Data output locations on Hugging Face.
 - Key hyperparameters (K, sampling strategy) and re-implementation gotchas.
 
 ## Citation
