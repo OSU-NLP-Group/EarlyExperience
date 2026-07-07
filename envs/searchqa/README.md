@@ -1,6 +1,6 @@
 # SearchQA
 
-> **Status: TBD.** Reproduction is not yet stable enough to release. Pipeline scripts and NOTES exist in this directory as work-in-progress reference; the data on Drive is provisional and not yet validated against a trained model.
+> **Status: TBD.** Reproduction is not yet stable enough to release. Provisional data is uploaded but not yet validated against a trained model.
 
 Multi-hop question-answering env, paper §B.5. The agent issues `<search>` queries against a Wikipedia (wiki-18) retrieval server, reads back `<information>...</information>`, and eventually emits `<answer>...</answer>`.
 
@@ -15,8 +15,10 @@ TBD — full description will be added once the SearchQA reproduction stabilizes
 
 ## Data output (provisional)
 
+Provisional files in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience) under `searchqa/`, not yet validated end-to-end:
+
 ```
-ggdrive:Early-Experience-Reproduce/data/searchqa/
+searchqa/
 ├── expert_sft.jsonl
 ├── iwm_sft.jsonl
 ├── reflection_sft_A.jsonl    # two reflection variants shipped for A/B; use A by default

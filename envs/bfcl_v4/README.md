@@ -33,10 +33,10 @@ Conceptual pieces layered on top:
 
 ## Data output
 
-Living on Google Drive (this repo does **not** vendor any SFT files):
+Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience):
 
 ```
-ggdrive:Early-Experience-Reproduce/data/bfcl_v4_v2/
+bfcl_v4_v2/
 ├── expert_sft_text.jsonl        # paper-faithful plain-Python action format
 ├── expert_sft_fc.jsonl          # OpenAI FC schema variant
 ├── iwm_sft_text.jsonl

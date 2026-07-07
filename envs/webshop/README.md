@@ -28,10 +28,10 @@ Upstream verl-agent focuses on **RL training loops** — it wraps the WebShop gy
 
 ## Data output
 
-Living on Google Drive (this repo does **not** vendor any SFT files):
+Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience):
 
 ```
-ggdrive:Early-Experience-Reproduce/data/webshop_v2/
+webshop_v2/
 ├── expert_sft.json
 ├── iwm_sft.json
 └── reflection_sft.json

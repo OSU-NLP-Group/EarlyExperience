@@ -31,15 +31,15 @@ Two conceptual pieces layered on top of the paper gym:
 
 ## Data output
 
-Living on Google Drive (this repo does **not** vendor any SFT files):
+Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience):
 
 ```
-ggdrive:Early-Experience-Reproduce/data/travelplanner/
+travelplanner/
 ├── expert_sft.jsonl
 ├── iwm_sft.jsonl
 └── (legacy reflection version)
 
-ggdrive:Early-Experience-Reproduce/data/travelplanner_v3/
+travelplanner_v3/
 ├── reflection_sft_full.jsonl        # 1,225 records, median 124 words
 └── reflection_sft_compressed.jsonl  # 1,226 records, median  50 words
 ```

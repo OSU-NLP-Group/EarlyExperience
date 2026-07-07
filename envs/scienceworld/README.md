@@ -35,10 +35,10 @@ Beyond that endpoint patch, everything else is a client-side EE data pipeline:
 
 ## Data output
 
-Living on Google Drive (this repo does **not** vendor any SFT files):
+Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience):
 
 ```
-ggdrive:Early-Experience-Reproduce/data/scienceworld_v2/
+scienceworld_v2/
 ├── expert_sft.v2.jsonl
 ├── iwm_sft.v2.jsonl
 └── reflection_sft.v2.jsonl

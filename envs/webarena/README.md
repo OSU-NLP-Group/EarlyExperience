@@ -1,6 +1,6 @@
 # WebArena
 
-> **Status: TBD.** Reproduction is not yet stable enough to release. Pipeline is not yet documented; the data on Drive is provisional and not yet validated against a trained model.
+> **Status: TBD.** Reproduction is not yet stable enough to release. Pipeline is not yet documented; provisional data is uploaded but not yet validated against a trained model.
 
 Realistic web-navigation env, paper §B.8. The agent navigates a full-stack simulated web application (Gitlab, Reddit-like forum, e-commerce admin, maps, ...) using DOM interaction to complete natural-language tasks.
 
@@ -14,8 +14,10 @@ TBD — full description will be added once the WebArena reproduction stabilizes
 
 ## Data output (provisional)
 
+Provisional files in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience) under `webarena/`, not yet validated end-to-end:
+
 ```
-ggdrive:Early-Experience-Reproduce/data/webarena/
+webarena/
 ├── iwm_sft.jsonl        # ⚠️ prettified JSON array, not JSONL — preconvert before loading
 └── reflection_sft.jsonl
 ```

@@ -32,15 +32,15 @@ So the pipeline is purely client-side:
 
 ## Data output
 
-Living on Google Drive (this repo does **not** vendor any SFT files):
+Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience):
 
 ```
-ggdrive:Early-Experience-Reproduce/data/textcraft/
+textcraft/
 ├── expert_sft.jsonl
 ├── (iwm — see textcraft_v2 for the latest iwm variant)
 └── reflection_sft.jsonl
 
-ggdrive:Early-Experience-Reproduce/data/textcraft_v2/
+textcraft_v2/
 └── iwm_sft.v2.jsonl
 ```
 

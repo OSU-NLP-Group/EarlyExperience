@@ -30,10 +30,10 @@ Two conceptual pieces layered on top of the verl-agent AppWorld wrapper:
 
 ## Data output
 
-Living on Google Drive (this repo does **not** vendor any SFT files):
+Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience):
 
 ```
-ggdrive:Early-Experience-Reproduce/data/appworld/
+appworld/
 ├── expert_sft.jsonl
 ├── iwm_sft_full.jsonl         # all filled alts kept
 ├── iwm_sft_balanced.jsonl     # per-state K clipped for balanced training
