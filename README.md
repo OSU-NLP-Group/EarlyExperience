@@ -9,7 +9,7 @@
 
 ## Introduction
 
-Supported by [OSU NLP](https://github.com/OSU-NLP-Group) and [NeoCognition](https://neocognition.io/), this repo, done by [Xiangchao Chen](https://chasechen.xyz/), [Tinghui Zhu](https://darthzhu.github.io/), and [Kai Zhang](https://drogozhang.github.io/), contains open-source code and data reproductions for **"[Agent Learning via Early Experience](https://arxiv.org/pdf/2510.08558)"**.
+Supported by [OSU NLP](https://github.com/OSU-NLP-Group) and [NeoCognition](https://neocognition.io/), this repo contains open-source code and data reproductions for **"[Agent Learning via Early Experience](https://arxiv.org/pdf/2510.08558)"**.
 
 The paper introduces a training paradigm sitting between imitation learning (IL) and reinforcement learning (RL) — one that is applicable to environments without verifiable reward signals or where long-horizon rollouts make RL impractical. The agent collects its own interaction data by proposing non-expert actions at expert-visited states, then uses the *resulting next states* as supervision — without any reward.
 
@@ -106,7 +106,7 @@ For each env, the linked README describes:
 - Key hyperparameters (K, sampling strategy) and re-implementation gotchas.
 
 ## Citation
-If you find this code or data helpful, please cite:
+This repo per se done by [Xiangchao Chen](https://chasechen.xyz/), [Tinghui Zhu](https://darthzhu.github.io/), and [Kai Zhang](https://drogozhang.github.io/). If you find this code or data helpful, please cite the original paper:
 
 ```bibtex
 @inproceedings{Zhang2026EarlyExperience,
