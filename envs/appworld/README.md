@@ -2,6 +2,8 @@
 
 Free-form code-action agent env. The agent solves a natural-language supervisor request (`"Deposit $5 in each of my spotify friends' Venmo accounts."`) by writing Python that runs in a sandboxed REPL with access to `apis.<app>.<endpoint>(...)` — a fixed catalog of mock apps (spotify, venmo, gmail, phone, file_system, amazon, todoist, simple_note, supervisor, ...).
 
+**Not in the paper.** Paper Appendix B covers 8 envs; AppWorld is not one of them. All per-env hyperparameters (K, sampling strategy, filter rules) are decided locally following the same conventions used for paper envs.
+
 ## Upstream
 
 - Env SDK: [`StonyBrookNLP/appworld`](https://github.com/StonyBrookNLP/appworld) — the AppWorld benchmark itself (HTTP-service, port-per-instance).
@@ -30,24 +32,21 @@ Two conceptual pieces layered on top of the verl-agent AppWorld wrapper:
 
 ## Data output
 
-Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience):
+Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience) under `appworld/`:
 
 ```
 appworld/
 ├── expert_sft.jsonl
-├── iwm_sft_full.jsonl         # all filled alts kept
-├── iwm_sft_balanced.jsonl     # per-state K clipped for balanced training
+├── iwm_sft.jsonl
 └── reflection_sft.jsonl
 ```
-
-Both `full` and `balanced` IWM variants are provided so downstream training can A/B them.
 
 ## Reproducibility notes
 
 - **Trajectory source**: AppWorld SDK ground-truth programs for the `train` split (90 tasks, 931 SA pairs).
 - **State re-synchronization**: AppWorld has no native snapshot API, so to probe alternatives at step `i` we spin up a fresh env, replay `expert_actions[0..i-1]`, then execute the alternative — the same `O(K · N²)` pattern any AppWorld EE implementation must follow.
 - **Proposer**: any LLM with structured output; args and code candidates schema-bound so temperature-1 sampling is stable. See `skill/SKILL.md` for the model-choice discussion.
-- **K for IWM**: the pipeline is designed so downstream K can be chosen at build time (data has ≥30 env-meaningful alternatives at 93.6% of states). `iwm_sft_balanced.jsonl` clips to a fixed per-state K.
+- **K for IWM**: the pipeline is designed so downstream K can be chosen at build time (data has ≥30 env-meaningful alternatives at 93.6% of states).
 - **Server concurrency caveat**: AppWorld's server has no multi-tenancy (a global `world` object). Any parallel probing must launch one server process per worker — running K workers against a shared server silently races and corrupts state.
 
 For a full reproduction, install the AppWorld SDK per its own README and follow the modification strategy above against a fresh clone of upstream.

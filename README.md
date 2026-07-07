@@ -5,7 +5,7 @@
   <a href="https://huggingface.co/datasets/osunlp/early-experience"><img src="https://img.shields.io/badge/🤗_HuggingFace-Dataset-yellow" alt="Hugging Face Dataset"></a>
 </p>
 
------
+---
 
 ## Introduction
 
@@ -30,12 +30,12 @@ All SFT files (expert / IWM / reflection) are available on [huggingface](https:/
 
 ## Using the skill
 
-The [`skill/`](skill/) directory contains three files — `SKILL.md` (workflow), `method_recap.md` (design decisions), `pitfalls.md` (accumulated gotchas) — that together specify how to produce early-experience data for a new env.
+The [`skill/`](skill/) directory bundles everything an agent needs to produce early-experience data for a new env — `SKILL.md` (workflow router + hard rules), `METHOD.md` (paper method definitions and reflection prompt template), `method_recap.md` (non-obvious design decisions), `pitfalls.md` (accumulated gotchas), `NOTES_TEMPLATE.md` (skeleton for per-env decision log), and `paper.pdf` for cross-reference.
 
-To use with your code agent, copy the skill into your project and point the agent at `SKILL.md`:
+To use with your code agent, drop the skill into your project in one line:
 
 ```bash
-cp -r skill /path/to/your/project/
+git clone https://github.com/OSU-NLP-Group/EarlyExperience.git && cp -r EarlyExperience/skill /path/to/your/project/
 ```
 
 Then instruct the agent: *"Read `skill/SKILL.md` before doing any early-experience data-generation work."* The skill walks the agent through method mapping, alternative-action sampling design, reflection generation, and the common re-implementation pitfalls.
@@ -76,21 +76,28 @@ Interactive science-lab env (paper §B.6). Requires the *admissible-action list 
 
 ### TravelPlanner — [envs/travelplanner](envs/travelplanner/)
 
-Multi-day travel-planning env (paper §B.7). The whole plan is submitted in one turn, which makes SR the dominant methodological challenge: reflections must justify *specific slot fills* against constraint-stratified alternatives (budget / cuisine / min-nights / city-sequence / mode-chain). Two reflection variants ship: `full` (~124 words) and `compressed` (~50 words). See [envs/travelplanner/README.md](envs/travelplanner/README.md).
-
-### WebArena — [envs/webarena](envs/webarena/) 🚧
-
-Realistic full-stack web-navigation env (paper §B.8). **In progress.** Expert side is sourced from the [Agent Data Protocol (ADP)](https://arxiv.org/abs/2510.07059) paper's 4 WebArena-relevant expert sources. See [envs/webarena/README.md](envs/webarena/README.md).
+Multi-day travel-planning env (paper §B.7). The whole plan is submitted in one turn, which makes SR the dominant methodological challenge: reflections must justify *specific slot fills* against constraint-stratified alternatives (budget / cuisine / min-nights / city-sequence / mode-chain). See [envs/travelplanner/README.md](envs/travelplanner/README.md).
 
 ### AppWorld — [envs/appworld](envs/appworld/)
 
-Free-form code-action agent env. The agent writes Python that runs in a sandboxed REPL with access to mock apps (spotify, venmo, gmail, ...). The cleanest EE candidate we support — expert data is free (via the AppWorld SDK's ground-truth programs), and total pipeline cost measured at ~$3 for the full train split. Both `full` and `balanced` IWM variants ship. See [envs/appworld/README.md](envs/appworld/README.md).
+Free-form code-action agent env (not in paper). The agent writes Python that runs in a sandboxed REPL with access to mock apps (spotify, venmo, gmail, ...). Among the cleanest EE candidates in this release — expert data is free (via the AppWorld SDK's ground-truth programs), so IWM cost stays at just a proposer call per state. See [envs/appworld/README.md](envs/appworld/README.md).
 
 ### TextCraft — [envs/textcraft](envs/textcraft/)
 
 Text-based Minecraft-style crafting game (not in paper). Included as an extra env exercising the same EE recipe on a simpler action space. Admissible actions are entirely client-derivable from `(commands_list, inventory)` — no server-side patch needed. See [envs/textcraft/README.md](envs/textcraft/README.md).
 
-Tau-Bench and SearchQA will come soon 🚧!
+### Tau-Bench — [envs/tau-bench](envs/tau-bench/) 🚧
+
+Customer-service env (paper §B.4). **Coming soon.** See [envs/tau-bench/README.md](envs/tau-bench/README.md).
+
+### SearchQA — [envs/searchqa](envs/searchqa/) 🚧
+
+Multi-hop question-answering env (paper §B.5). **Coming soon.** See [envs/searchqa/README.md](envs/searchqa/README.md).
+
+### WebArena — [envs/webarena](envs/webarena/) 🚧
+
+Realistic full-stack web-navigation env (paper §B.8). **In progress.** Expert side is sourced from the [Agent Data Protocol (ADP)](https://arxiv.org/abs/2510.07059) paper's 4 WebArena-relevant expert sources. See [envs/webarena/README.md](envs/webarena/README.md).
+
 ---
 
 For each env, the linked README describes:
