@@ -1,6 +1,6 @@
 # SearchQA
 
-> **In progress.** Coming soon.
+> **Coming soon.**
 
 Multi-hop question-answering env, paper §B.5. The agent issues `<search>` queries against a Wikipedia (wiki-18) retrieval server, reads back `<information>...</information>`, and eventually emits `<answer>...</answer>`.
 
