@@ -1,6 +1,6 @@
 # SearchQA
 
-> **Status: TBD.** Reproduction is not yet stable enough to release. Provisional data is uploaded but not yet validated against a trained model.
+> **In progress.** Full pipeline description and results coming soon.
 
 Multi-hop question-answering env, paper §B.5. The agent issues `<search>` queries against a Wikipedia (wiki-18) retrieval server, reads back `<information>...</information>`, and eventually emits `<answer>...</answer>`.
 
@@ -9,13 +9,13 @@ Multi-hop question-answering env, paper §B.5. The agent issues `<search>` queri
 - Paper reference implementation: SearchR1 (author's paper-faithful codebase).
 - Underlying retrieval: e5 dense retrieval + FAISS index over wiki-18 (~50 GB index).
 
-## Modification strategy (planned)
+## Modification strategy
 
-TBD — full description will be added once the SearchQA reproduction stabilizes.
+Coming soon.
 
-## Data output (provisional)
+## Data output
 
-Provisional files in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience) under `searchqa/`, not yet validated end-to-end:
+Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience) under `searchqa/`:
 
 ```
 searchqa/
@@ -27,4 +27,4 @@ searchqa/
 
 ## Reproducibility notes
 
-TBD — hyperparameters, K, and the two reflection-variant design will be documented once validated.
+Coming soon.

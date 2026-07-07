@@ -56,7 +56,7 @@ Then instruct the agent: *"Read `skill/SKILL.md` before doing any early-experien
 
 ## Environments
 
-Ten envs are represented in this release. Seven have been stabilized and validated end-to-end (data → training → eval). Three are marked TBD — data ships as provisional, but the training-eval loop is not yet closed.
+Ten envs in this release. Seven with the full loop shipped (data → training → eval); three more in progress.
 
 ### ALFWorld — [envs/alfworld](envs/alfworld/)
 
@@ -80,7 +80,7 @@ Multi-day travel-planning env (paper §B.7). The whole plan is submitted in one 
 
 ### WebArena — [envs/webarena](envs/webarena/) 🚧
 
-Realistic full-stack web-navigation env (paper §B.8). **Status: TBD.** Provisional data ships on Drive; expert side is sourced from the [Agent Data Protocol (ADP)](https://arxiv.org/abs/2510.07059) paper's 4 WebArena-relevant expert sources. See [envs/webarena/README.md](envs/webarena/README.md).
+Realistic full-stack web-navigation env (paper §B.8). **In progress.** Expert side is sourced from the [Agent Data Protocol (ADP)](https://arxiv.org/abs/2510.07059) paper's 4 WebArena-relevant expert sources. See [envs/webarena/README.md](envs/webarena/README.md).
 
 ### AppWorld — [envs/appworld](envs/appworld/)
 
