@@ -8,7 +8,7 @@
 
 ## Introduction
 
-Supported by [OSU NLP](https://github.com/OSU-NLP-Group) and [NeoCognition](https://neocognition.io/), This is an open-source code and data reproduction for **"Agent Learning via Early Experience"** (Zhang et al., ICML 2026), done by [Xiangchao Chen](https://chasechen.xyz/), [Tinghui Zhu](https://darthzhu.github.io/), and [Kai Zhang](https://drogozhang.github.io/).
+Supported by [OSU NLP](https://github.com/OSU-NLP-Group) and [NeoCognition](https://neocognition.io/), this repo contains open-source code and data reproductions for **"Agent Learning via Early Experience"** (Zhang et al., ICML 2026), done by [Xiangchao Chen](https://chasechen.xyz/), [Tinghui Zhu](https://darthzhu.github.io/), and [Kai Zhang](https://drogozhang.github.io/).
 
 The paper introduces a training paradigm sitting between imitation learning (IL) and reinforcement learning (RL) — one that is applicable to environments without verifiable reward signals or where long-horizon rollouts make RL impractical. The agent collects its own interaction data by proposing non-expert actions at expert-visited states, then uses the *resulting next states* as supervision — without any reward.
 
@@ -22,6 +22,10 @@ This repo ships:
 - **A Claude Code skill** (`.claude/skills/early-experience-data/`) that captures the general methodology and pitfalls of generating EE data for any env.
 - **Ten env-specific implementation notes** (`envs/<env>/`) with per-env modification strategies, data locations, and reproducibility notes.
 - **Pre-generated SFT data** (expert / IWM / reflection) on Google Drive for every env we've stabilized.
+
+## Data
+
+All SFT files (expert / IWM / reflection) are available on [huggingface](https://huggingface.co/datasets/osunlp/early-experience):
 
 ## Using the skill
 
@@ -65,14 +69,6 @@ E-commerce shopping env (paper §B.2). The agent handles instructions like *"fin
 
 Multi-turn function-calling benchmark (paper §B.3). Because sim state is pure-Python and `copy.deepcopy`-able, alternative-action probing is exceptionally cheap: no re-replay, no HTTP env spin-up. IWM uses `K=10` alt names sampled structurally from the involved sim classes, with one LLM call filling all K argument sets per state. See [envs/bfcl_v4/README.md](envs/bfcl_v4/README.md).
 
-### Tau-Bench — [envs/tau-bench](envs/tau-bench/) 🚧
-
-Customer-service env (paper §B.4). **Status: TBD** — reproduction not yet stable. Provisional data ships on Drive. See [envs/tau-bench/README.md](envs/tau-bench/README.md).
-
-### SearchQA — [envs/searchqa](envs/searchqa/) 🚧
-
-Multi-hop QA env (paper §B.5). **Status: TBD.** Provisional data ships on Drive; not yet validated. See [envs/searchqa/README.md](envs/searchqa/README.md).
-
 ### ScienceWorld — [envs/scienceworld](envs/scienceworld/)
 
 Interactive science-lab env (paper §B.6). Requires the *admissible-action list at every state*; we patch AgentGym's HTTP env-server to expose an `/admissible_actions` endpoint backed by ScienceWorld's own combination generator. IWM samples `K=3` uniform non-expert alts; SR uses policy-proposed alts with refill-from-admissible. See [envs/scienceworld/README.md](envs/scienceworld/README.md).
@@ -93,6 +89,7 @@ Free-form code-action agent env. The agent writes Python that runs in a sandboxe
 
 Text-based Minecraft-style crafting game (not in paper). Included as an extra env exercising the same EE recipe on a simpler action space. Admissible actions are entirely client-derivable from `(commands_list, inventory)` — no server-side patch needed. See [envs/textcraft/README.md](envs/textcraft/README.md).
 
+Tau-Bench and SearchQA will come soon 🚧!
 ---
 
 For each env, the linked README describes:
@@ -101,26 +98,6 @@ For each env, the linked README describes:
 - The method mapping (how EE's expert / IWM alt / SR reflection concepts realize concretely in this env).
 - Data output locations on Google Drive.
 - Key hyperparameters (K, sampling strategy) and re-implementation gotchas.
-
-## Data
-
-All SFT files (expert / IWM / reflection) are hosted on Google Drive:
-
-```
-https://drive.google.com/drive/folders/19envwwSdsCmFp8tNP8iwofTeVCltrrFa
-```
-
-Organized as `data/<env>/*.jsonl` (with `_v2` / `_v3` sibling folders for the envs we've iterated on). Each env's README documents the canonical latest paths for that env.
-
-To fetch programmatically, [`rclone`](https://rclone.org/) works well:
-
-```bash
-rclone copy ggdrive:Early-Experience-Reproduce/data/<env>/ /local/dest/
-```
-
-## Training
-
-*Training pipeline documentation to be added.*
 
 ## Citation
 If you find this code or data helpful, please cite:
