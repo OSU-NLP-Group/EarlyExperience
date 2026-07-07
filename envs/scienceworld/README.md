@@ -35,13 +35,13 @@ Beyond that endpoint patch, everything else is a client-side EE data pipeline:
 
 ## Data output
 
-Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience):
+Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience) under `scienceworld/`:
 
 ```
-scienceworld_v2/
-├── expert_sft.v2.jsonl
-├── iwm_sft.v2.jsonl
-└── reflection_sft.v2.jsonl
+scienceworld/
+├── expert_sft.jsonl
+├── iwm_sft.jsonl
+└── reflection_sft.jsonl
 ```
 
 ## Reproducibility notes

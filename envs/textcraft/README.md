@@ -32,16 +32,13 @@ So the pipeline is purely client-side:
 
 ## Data output
 
-Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience):
+Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience) under `textcraft/`:
 
 ```
 textcraft/
 ├── expert_sft.jsonl
-├── (iwm — see textcraft_v2 for the latest iwm variant)
+├── iwm_sft.jsonl
 └── reflection_sft.jsonl
-
-textcraft_v2/
-└── iwm_sft.v2.jsonl
 ```
 
 ## Reproducibility notes

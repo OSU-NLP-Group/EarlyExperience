@@ -22,7 +22,7 @@ This repo ships:
 
 - **A skill guide** (`skill/`) capturing the general methodology, method mapping, and pitfalls of generating EE data for any env — designed to be consumed by a code agent (any flavor) as a workflow reference.
 - **Ten env-specific implementation notes** (`envs/<env>/`) that serve two purposes: (1) enough detail to reproduce our numbers on the paper's envs, and (2) worked examples of what "porting a new agentic env into the EE framework" actually looks like. Anyone can pick up the skill and add their own env by following the same recipe.
-- **Pre-generated SFT data** (expert / IWM / reflection) on Google Drive for every env we've stabilized.
+- **Pre-generated SFT data** (expert / IWM / reflection) on Hugging Face for every env in this release.
 
 ## Data
 
@@ -97,7 +97,7 @@ For each env, the linked README describes:
 - The upstream env repo (with license and version pin).
 - Our high-level modification strategy — the *why* and *what* of the changes, not code-level detail. Enough to guide a reimplementation on your own fork.
 - The method mapping (how EE's expert / IWM alt / SR reflection concepts realize concretely in this env).
-- Data output locations on Google Drive.
+- Data output locations on Hugging Face.
 - Key hyperparameters (K, sampling strategy) and re-implementation gotchas.
 
 ## Citation

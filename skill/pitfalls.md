@@ -36,7 +36,7 @@ Environment-specific failure modes observed while building early-experience data
 
 **Env where observed**: ScienceWorld
 
-**What happened**: An early version of the SR reflection prompt followed METHOD.md §4.3 closely — input slots labeled "Expert Action (a_i)" and "Alternative Actions: 1. ... 2. ...". A reflection LLM handed such an input echoed those labels into its monologue ~16% of the time ("the expert action is X, which makes sense because…", "Action 1 would be less helpful because…"). This breaks the entire point of the SR CoT: at inference the trained model has no privileged "expert" label, and the CoT must be the model's *own* reasoning that arrives at the chosen action. Training on text that announces the expert label corrupts the supervision signal.
+**What happened**: The paper's default reflection prompt (METHOD.md §4.3, quoted verbatim) uses input slots labeled "Expert Action (a_i)" and "Alternative Actions: 1. ... 2. ...". A reflection LLM handed such an input will echo those labels into its monologue at a non-trivial rate ("the expert action is X, which makes sense because…", "Action 1 would be less helpful because…") — observed ~16% in one batch. This breaks the entire point of the SR CoT: at inference the trained model has no privileged "expert" label, and the CoT must be the model's *own* reasoning that arrives at the chosen action. Training on text that announces the expert label corrupts the supervision signal.
 
 **Root cause**: LLMs default to "essay justifying a known answer" mode when handed a labeled answer in the input — this is the default training distribution. The model has no inherent reason to suppress labels just because the next-token target says it should.
 

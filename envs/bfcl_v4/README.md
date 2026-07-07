@@ -33,10 +33,10 @@ Conceptual pieces layered on top:
 
 ## Data output
 
-Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience):
+Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience) under `bfcl_v4/`:
 
 ```
-bfcl_v4_v2/
+bfcl_v4/
 ├── expert_sft_text.jsonl        # paper-faithful plain-Python action format
 ├── expert_sft_fc.jsonl          # OpenAI FC schema variant
 ├── iwm_sft_text.jsonl

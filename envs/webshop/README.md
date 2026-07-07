@@ -28,16 +28,14 @@ Upstream verl-agent focuses on **RL training loops** — it wraps the WebShop gy
 
 ## Data output
 
-Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience):
+Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience) under `webshop/`:
 
 ```
-webshop_v2/
-├── expert_sft.json
-├── iwm_sft.json
-└── reflection_sft.json
+webshop/
+├── expert_sft.jsonl
+├── iwm_sft.jsonl
+└── reflection_sft.jsonl
 ```
-
-**⚠️ Format note**: `webshop_v2/` files use `.json` extension because they're prettified JSON arrays (not line-delimited JSONL). Downstream training loaders (e.g. LLaMA-Factory's default JSONL reader) need to preconvert to `.jsonl` first — trivial one-liner: `for r in json.load(open(...)): out.write(json.dumps(r) + '\n')`.
 
 ## Reproducibility notes
 
