@@ -11,7 +11,7 @@ Function-calling benchmark, paper §B.3 (paper calls this "BFCLv3"; we pin v4 be
 Upstream Gorilla is a full evaluator harness — we use it *as a library* for the sim classes and their state semantics, and layer an offline EE pipeline on top. Two important properties make BFCL an unusually clean EE target:
 
 1. **State is `copy.deepcopy`-able**. All sim classes are pure Python instances, so we can snapshot / restore state without spinning up a fresh env. This makes alternative-action probing cheap: `O(K)` deepcopies per state, no re-replay.
-2. **Expert already carries observations**. The published Opus-FC leaderboard result JSON embeds per-step tool responses in the `inference_log`. Expert SFT harvest does **not** require re-replay against the fork.
+2. **Expert already carries observations**. The published Opus-FC leaderboard result JSON embeds per-step tool responses in the `inference_log`. Expert SFT harvest does **not** require re-replay against a live env.
 
 Conceptual pieces layered on top:
 
