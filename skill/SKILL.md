@@ -13,16 +13,16 @@ description: |
 
 # Early Experience Data Generation
 
-This skill governs how data generation for the early-experience paradigm is done across all environments in this project. Read this entire file before starting work in `envs/<env>/`.
+This skill governs how data generation for the early-experience paradigm is done. Read this entire file before starting work in `envs/<env>/`.
 
-## What this project is for
+## What this skill is for
 
-The project produces SFT-ready training data for the two methods defined in the paper (https://arxiv.org/abs/2510.08558) and recapped in `METHOD.md`:
+This skill produces SFT-ready training data for the two methods defined in the paper (https://arxiv.org/abs/2510.08558) and recapped in `METHOD.md`:
 
 - **Implicit World Modeling (IWM)** — train the policy to predict the next state given the current state and an action.
 - **Self-Reflection (SR)** — train the policy to produce a chain-of-thought reasoning over expert vs alternative actions, then the expert action.
 
-The output of this project is JSONL files under `envs/<env>/data/sft/`. **Training itself is out of scope.** If a task requires running SFT, evaluating checkpoints, or tuning training hyperparameters, stop and escalate.
+The output of this skill's workflow is JSONL files under `envs/<env>/data/sft/`. **Training itself is out of scope.** If a task requires running SFT, evaluating checkpoints, or tuning training hyperparameters, that belongs elsewhere — surface it to the user rather than acting on it inside this skill.
 
 ## Required reading order
 
@@ -35,7 +35,7 @@ Before any work in `envs/<env>/`, read in this order:
 
 If any of these files is missing or empty, surface it as a question rather than guessing.
 
-**On conflicts between layers.** For project-wide mechanics (gates, output layout shape), this skill wins. For **env-specific** content (state representation, K, sampling strategy, prompt extensions, filtering rationale, anything tied to one env's interface or paper section), the env's `NOTES.md` is closer to truth than the generic guidance here. **But never silently resolve a conflict.** If you notice that NOTES.md says one thing and SKILL.md / METHOD.md says another, stop and surface the conflict to the user before proceeding — the usual outcome is that NOTES.md needs a correction, and the user will edit it.
+**On conflicts between layers.** For skill-wide mechanics (gates, output layout shape), this skill wins. For **env-specific** content (state representation, K, sampling strategy, prompt extensions, filtering rationale, anything tied to one env's interface or paper section), the env's `NOTES.md` is closer to truth than the generic guidance here. **But never silently resolve a conflict.** If `NOTES.md` says one thing and `SKILL.md` / `METHOD.md` says another, stop and surface the conflict to the user before proceeding — the usual outcome is that `NOTES.md` needs a correction, and the user will edit it.
 
 ## Step 0: Ask the user which generator model to use
 
@@ -52,21 +52,21 @@ Neither is more "correct" — the choice is up to the user. Record the decision 
 
 These override any user request short of an explicit override.
 
-1. **No LLM API call without confirmation.** Every batch — smoke or full, 5 samples or 50k — must go through the pre-call confirmation gate defined in team conventions §2. State what we're doing, how much data, and approximate token volume. Wait for explicit go-ahead. Silence is not consent.
+1. **No LLM API call without user confirmation.** Every batch — smoke or full, 5 samples or 50k — must be preceded by a message stating what will run, how much data, and approximate token / cost volume. Wait for explicit go-ahead. Silence is not consent.
 
-2. **Default to not editing inside `envs/<env>/<upstream-name>/`.** Prefer external wrappers or config overrides from outside the submodule. If touching submodule internals is genuinely the simpler path, explain the reason to the user, get approval, and make the change. Mechanics live in team conventions §7.
+2. **Default to not editing inside the upstream env repo.** Prefer external wrappers or config overrides from outside it. If touching upstream internals is genuinely the simpler path, explain the reason to the user, get approval, then make the change.
 
-3. **Env runs end-to-end before pipeline code is written.** For any new env: install per its README, run its own tests or a minimal `reset → step → done` loop, confirm it works. Pipeline code (rollout, reflection generation, SFT writers) does not get written until this gate passes. The point is to surface install/dependency/runtime issues before they get tangled with your own code.
+3. **Env runs end-to-end before pipeline code is written.** For any new env: install per its README, run its own tests or a minimal `reset → step → done` loop, confirm it works. Pipeline code (rollout, reflection generation, SFT writers) does not get written until this gate passes. The point is to surface install / dependency / runtime issues before they get tangled with your own code.
 
-4. **Smoke before scale.** No full-scale rollout or reflection generation before a smoke run (CC chooses the size) has produced data that passes hand inspection of at least 5 samples.
+4. **Smoke before scale.** No full-scale rollout or reflection generation before a smoke run has produced data that passes hand inspection of at least 5 samples.
 
-5. **Filter rules go through the approval protocol.** Default position for any new env is no filters. Any filter applied to data in `data/sft/` must go through the protocol in team conventions §3 — propose, quantify impact, wait for user approval, record in NOTES.md, then apply.
+5. **Filter rules require explicit user approval.** Default position for any new env is no filters. Any filter applied to data in `data/sft/` must first be proposed to the user with rationale and quantified impact (how many samples it drops, what kind); wait for approval, record the rule and its rationale in `NOTES.md`, then apply.
 
-6. **Full-scale runs go through the deployment checkpoint.** Before transitioning from smoke to full scale on any env, run the deployment checkpoint in team conventions §5. Single message covering all the per-env decisions and projected costs; wait for explicit user go-ahead.
+6. **Before scaling from smoke to full, summarize and confirm.** Send a single message covering all the per-env decisions locked in during smoke (K, sampling regime, prompt structure, filter rules if any, projected token / time / cost). Wait for explicit user go-ahead before launching the full run.
 
-7. **Final SFT output layout is fixed in shape, not in count.** See "Output layout" below. The three SFT **categories** (expert / IWM / reflection), the filename prefix per category, the directory location, and the outer JSONL schema are not negotiable. Default is one file per category; produce more only when the env's standard pipeline (as captured in NOTES.md) prescribes multiple variants. This project targets the paper's standard pipeline per env, not ablations.
+7. **Final SFT output layout is fixed in shape, not in count.** See "Output layout" below. The three SFT **categories** (expert / IWM / reflection), the filename prefix per category, the directory location, and the outer JSONL schema are not negotiable. Default is one file per category; produce more only when the env's pipeline (as captured in `NOTES.md`) prescribes multiple variants.
 
-8. **No training code.** This project does not contain SFT scripts, RL loops, or evaluation harnesses. If asked to write training code, stop and escalate.
+8. **This skill's scope stops at SFT-ready files.** If a task requires running SFT, evaluating checkpoints, or tuning training hyperparameters, that is out of scope for the skill — surface it to the user rather than acting on it silently.
 
 9. **SR reflection length is a per-env decision, confirmed with the user before any LLM batch.** Unconstrained, modern LLMs emit ~500–1000 word reflections, with the longest cases also being the most pathological (model wrestling with itself, drifting to a different action). Recommended default: target 200–400 words with a soft cap around **500 words**, enforced **only through prompt instruction** — not via a `max_tokens` API limit. Hard token caps truncate mid-sentence and produce worse training data than overlong-but-complete reflections; rely on the prompt to nudge length, and accept the occasional outlier. Each env must surface its own length choice in `envs/<env>/NOTES.md` and have the user explicitly confirm it — sometimes a short-task env wants tighter (e.g. 200 target); sometimes a long-horizon complex-reasoning env wants more headroom.
 
@@ -112,20 +112,20 @@ Anything that is not a final SFT file goes somewhere under `envs/<env>/data/` �
 
 Use the directory's current state to figure out where you are:
 
-- **NOTES.md absent** → recon mode. Read the upstream repo, get the env to run end-to-end (hard rule 3), draft NOTES.md, stop for user review. Do not write pipeline code yet.
-- **NOTES.md present, no scripts/data** → implementation mode. Write the rollout / reflection / SFT-building code. Run a smoke. Stop for user review of smoke outputs.
-- **NOTES.md present, smoke data exists, full data does not** → either iterate on smoke findings or run the deployment checkpoint and go to full scale. Discuss with the user before deciding.
-- **NOTES.md present, full SFT data exists** → finishing mode. Verify against "What 'done' looks like" below.
+- **`NOTES.md` absent** → orientation stage. Read the upstream repo, get the env to run end-to-end (hard rule 3), draft `NOTES.md`, stop for user review. Do not write pipeline code yet.
+- **`NOTES.md` present, no scripts/data** → implementation stage. Write the rollout / reflection / SFT-building code. Run a smoke. Stop for user review of smoke outputs.
+- **`NOTES.md` present, smoke data exists, full data does not** → either iterate on smoke findings or, if the smoke passes review, run the scale-up gate (hard rule 6) and go to full scale. Discuss with the user before deciding.
+- **`NOTES.md` present, full SFT data exists** → finishing mode. Verify against "What 'done' looks like" below.
 
 ## What "done" looks like for an env
 
 A finished env has:
 
 - A populated `envs/<env>/NOTES.md` documenting all env-specific decisions, the upstream repo and its pinned commit, and where intermediate artifacts live.
-- A working isolated Python environment, set up however the upstream's install path requires, with the actual setup commands recorded in NOTES.md so the env can be reproduced.
-- Submodule(s) under `envs/<env>/<upstream-name>/` pinned to known commits.
+- A working isolated Python environment, set up however the upstream's install path requires, with the actual setup commands recorded in `NOTES.md` so the env can be reproduced.
+- The upstream env repo pinned to a known commit (submodule, vendored, or lockfile — whatever the project uses).
 - Scripts in `envs/<env>/` for collecting expert trajectories, rolling out alternative actions, generating reflections, and a smoke test. Names and structure are the env's choice.
-- `envs/<env>/data/sft/` containing at least one file in each of the three required categories (expert / IWM / reflection) at the agreed full scale, with all variants enumerated in NOTES.md.
+- `envs/<env>/data/sft/` containing at least one file in each of the three required categories (expert / IWM / reflection) at the agreed full scale, with all variants enumerated in `NOTES.md`.
 - If anything env-specific was learned that other envs might hit, append it to `pitfalls.md`.
 
 ## When something is ambiguous
@@ -134,12 +134,12 @@ Default to **stopping and asking** rather than guessing. The cost of a clarifica
 
 - State representation (raw vs summary, what fields to include).
 - K and sampling strategy — propose what you think makes sense, but the final value is the user's decision.
-- Whether the env's reflection prompt needs env-specific extensions to the template in METHOD.md.
+- Whether the env's reflection prompt needs env-specific extensions to the template in `METHOD.md`.
 - Anything involving cost — token volume, GPU time, storage.
-- Anything that requires editing inside a submodule.
-- Upstream URL, fork URL, or pinned commit when setting up a new env. The user provides these — never fetch from GitHub by guessing or invent a URL.
+- Anything that requires editing inside the upstream env repo.
+- Upstream URL, pinned commit, or setup instructions when starting a new env. The user provides these — never fetch from GitHub by guessing or invent a URL.
 
-Filters are not in this list because they have their own protocol (hard rule 5 → team conventions). Full-scale runs are not in this list because they have their own gate (hard rule 6 → team conventions).
+Filters and full-scale launches are not in this list because they have their own hard rules (5 and 6 above).
 
 ## File map quick reference
 
@@ -154,8 +154,8 @@ skill/
 
 envs/<env>/
 ├── NOTES.md                     env-specific decisions, upstream pins, intermediate-artifact map
-├── <upstream-name>/             upstream env repo (installed however its README says)
-├── (env's own code + whatever the install path requires)
+├── (upstream env repo installed however its README says — location and pinning is the project's choice)
+├── (env's own scripts + whatever the install path requires)
 └── data/
     ├── sft/                     final training-ready JSONL — three categories, ≥1 file each
     │   ├── expert_sft*.jsonl

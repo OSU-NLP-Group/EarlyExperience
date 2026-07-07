@@ -1,6 +1,6 @@
 # Method Recap
 
-This is a short list of decisions where the right answer is non-obvious or runs against default coding instincts. Read `METHOD.md` for the formal definitions and the reflection prompt template; read team conventions for API access, retries, and the pre-call gate. This file only covers what's easy to get wrong.
+This is a short list of decisions where the right answer is non-obvious or runs against default coding instincts. Read `METHOD.md` for the formal definitions and the reflection prompt template; this file only covers what's easy to get wrong.
 
 ## Find expert trajectories before generating them
 
@@ -9,7 +9,7 @@ Don't reach for "let me generate experts with an LLM" first. Search in order:
 1. Whether the env itself ships canonical solutions.
 2. Whether the env's authors released expert data (repo, paper page, Hugging Face).
 3. Whether the community has released expert data — follow-up papers or open datasets that reuse this env.
-4. Only if none of the above: generate with an LLM, through the pre-call gate.
+4. Only if none of the above: generate with an LLM, with explicit user confirmation before the run.
 
 Generation is the last resort, not the first. Document the source and the URL in `envs/<env>/NOTES.md`.
 
@@ -17,7 +17,7 @@ Generation is the last resort, not the first. Document the source and the URL in
 
 The three files under `envs/<env>/data/sft/` are the final, training-ready, already-filtered dataset. The trainer does not filter — it loads and trains.
 
-But the filter rules themselves are not yours to invent. Before applying any filter, propose the rule to the user with the rationale and an estimate of its effect (how many samples it drops, what kind of samples). Wait for explicit approval, same pattern as the pre-call LLM gate. Approved filter rules go into `envs/<env>/NOTES.md`; samples that get dropped are still kept in intermediate artifacts (not in `sft/`) so the decision is reversible.
+But the filter rules themselves are not yours to invent. Before applying any filter, propose the rule to the user with the rationale and an estimate of its effect (how many samples it drops, what kind of samples). Wait for explicit approval. Approved filter rules go into `envs/<env>/NOTES.md`; samples that get dropped are still kept in intermediate artifacts (not in `sft/`) so the decision is reversible.
 
 The starting position for any new env is **no filters**. Add them through this approval process only when there's evidence from the smoke run that a specific kind of bad sample is contaminating the data.
 
@@ -57,7 +57,7 @@ Without an explicit Guideline forbidding all three, every capable LLM proposer d
 
 There are two ways to steer a CoT-generating LLM toward the data you want: **explain the principle** (what this data is for, why it must look a certain way, what the trained model will and won't have at inference) versus **enumerate constraints** (a checklist of "don't say X, don't do Y, banned phrase Z"). Both can appear in one prompt, but the balance should shift with the generator's capability:
 
-- **Strong general-purpose LLM:** lead with the principle. A prompt that opens with "you are building training data; after training the agent will stand exactly where this monologue stands — it sees only the task and history, has not run the action, has no list of options, and must generate this reasoning itself; therefore anything the monologue leans on that the agent couldn't have at that instant teaches it to hallucinate" gets you cleaner, more genuine output than the same behaviors listed as bare prohibitions. A capable model, told *why*, generalizes the intent to cases your checklist never enumerated — and the output reads as real reasoning rather than a model dancing around a rule list. Observed directly on AppWorld: the same failure modes (schema-field fabrication, code-narration, forward-planning) that a long DON'T list only partially suppressed were nearly eliminated once the prompt explained the transfer principle behind them.
+- **Strong general-purpose LLM:** lead with the principle. A prompt that opens with "you are building training data; after training the agent will stand exactly where this monologue stands — it sees only the task and history, has not run the action, has no list of options, and must generate this reasoning itself; therefore anything the monologue leans on that the agent couldn't have at that instant teaches it to hallucinate" gets cleaner, more genuine output than the same behaviors listed as bare prohibitions. A capable model, told *why*, generalizes the intent to cases your checklist never enumerated — and the output reads as real reasoning rather than a model dancing around a rule list. In practice on an open-Python-action env, the same failure modes (schema-field fabrication, code-narration, forward-planning) that a long DON'T list only partially suppressed were nearly eliminated once the prompt explained the transfer principle behind them.
 
 - **Weaker or smaller generator (including small models producing their own self-reflection):** lean more on explicit constraints — concrete banned phrases, WRONG-vs-RIGHT example pairs, a checklist — because a smaller model is less reliable at deriving the specific behaviors from an abstract principle. **But still state the principle**; constraints without the "why" produce brittle, gameable compliance. This is an author's judgment call per (env, model): decide how far to slide toward explicit constraints based on how much you trust the generator to reason from intent, and always smoke-read the output to see which register the model actually responds to.
 
@@ -67,19 +67,19 @@ The through-line: constraints tell the model what not to type; the principle tel
 
 Some environments have an action space so large that at any state there are effectively unbounded plausible API calls / argument combinations, and the overwhelming majority carry no useful signal (they error, or return data irrelevant to the task). AppWorld is the archetype: ~100 candidate endpoints per state, each with free-form args. Two consequences for how much alternative-action data to collect:
 
-- **IWM: sample a subset, don't chase coverage.** The world model only needs enough (state, action, next-state) transitions to learn the dynamics; exhaustively probing every alternative mostly adds error-outcome transitions that dilute the signal (confirmed on AppWorld: the full-coverage IWM set trained *worse* than a balanced subsample that capped the error fraction, and worse than plain IL, while the balanced subsample beat IL). Collect a bounded per-state sample with a sane data-vs-error mix; more is not better.
+- **IWM: sample a subset, don't chase coverage.** The world model only needs enough (state, action, next-state) transitions to learn the dynamics; exhaustively probing every alternative mostly adds error-outcome transitions that dilute the signal. In practice on an open-action env, a full-coverage IWM set trained *worse* than a balanced subsample that capped the error fraction (and worse than plain IL), while the balanced subsample beat IL. Collect a bounded per-state sample with a sane data-vs-error mix; more is not better.
 
 - **SR: K = 0 is a legitimate, sometimes best, choice.** SR's premise is that comparing the taken action against *genuinely competitive* alternatives yields insight. In a huge action space you usually cannot cheaply produce genuinely competitive alternatives — randomly sampled or exhaustively enumerated alternatives are almost never a real contender for the same subgoal, they're just unrelated calls. Feeding such alternatives into the reflection backfires two ways: with the alternatives named, the model learns to hallucinate a menu of options it was never given at inference; and (if the alternatives include fabricated-credential / placeholder calls the arg-filler invented) the model learns to *imitate* those bad calls — e.g. guessing passwords. The clean alternative is **K=0**: drop alternatives entirely and generate a pure "why is this action the sensible move here" CoT, grounded in the task, the history, and the real observed outcome (which the *author* sees to keep the reasoning on-track, but which never surfaces in the monologue). This is no longer paper-faithful SR (there is no alt-comparison), so **label it honestly in NOTES.md** as an IL+grounded-reflection variant — but for open-action-space envs it is often the only version that produces transferable reasoning instead of a hallucination-teaching artifact. Reserve K>0 for envs where you can actually construct plausible-but-suboptimal attempts at the *same* subgoal (different valid endpoint for the same data, different pagination, different operation order) — those give the reflection real material to compare.
 
 ## Some LLMs occasionally duplicate whole paragraphs in long generations
 
-At temperature 0.7+ with long-form output (reflection CoTs run 1.5k–3k chars), some LLMs intermittently emit the same paragraph twice in a single response — we observed a ~4% rate in one batch. This is a known LLM-class failure mode across major providers; if your provider doesn't suppress it server-side, handle it at post-processing time.
+At temperature 0.7+ with long-form output (reflection CoTs run 1.5k–3k chars), some LLMs intermittently emit the same paragraph twice in a single response — observed ~4% rate in one run. This is a known LLM-class failure mode across major providers; if your provider doesn't suppress it server-side, handle it at post-processing time.
 
 Mitigations, in order of cost:
-- Add `frequency_penalty=0.3` to the API call. Only effective with thinking disabled (team conventions warns these sampling params are silently ignored when thinking is on — we always keep thinking off so this is fine).
+- Add `frequency_penalty=0.3` to the API call. Note that some reasoning-mode configurations silently ignore sampling params — check your provider's docs and keep thinking / reasoning mode off if you want this to take effect.
 - Post-hoc detector at the SFT-build step: if the first 100–150 chars of the CoT appear again in the second half, drop or re-roll. Cheap, near-zero false positives.
 - Both is the prudent combination.
 
 ---
 
-Use the available compute sensibly. A naive `for ... : client.chat.completions.create(...)` or `for ... : env.step(...)` loop is usually the first thing that comes to mind but rarely the right thing to ship — there's almost always free wall-clock on the table. What "sensibly" means here depends on the env's interface and the hardware actually available, and that's the agent's call. team conventions and §4 are the engineering background.
+Use the available compute sensibly. A naive `for ... : client.chat.completions.create(...)` or `for ... : env.step(...)` loop is usually the first thing that comes to mind but rarely the right thing to ship — there's almost always free wall-clock on the table. What "sensibly" means here depends on the env's interface and the hardware actually available, and that's the agent's call.

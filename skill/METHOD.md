@@ -34,7 +34,7 @@ L_IWM = - Σ over (s_i, a_i^j, s_i^j) ∈ D_rollout
 1. **Stage 1 (IWM warm-up):** train for ~1 epoch on `D_rollout` with the next-state prediction loss above.
 2. **Stage 2 (Imitation):** continue training on `D_expert` with the standard imitation learning loss `L_IL = - Σ log π_θ(a_i | s_i)`.
 
-Training itself is out of scope for this project — the two-stage description is here only so data producers know how the data is consumed downstream.
+Training itself is out of scope for this skill — the two-stage description is here only so data producers know how the data is consumed downstream.
 
 **Data composition for SFT framework.**
 For each rollout triple, the SFT example is:
@@ -93,7 +93,7 @@ L_SR = - Σ over (s_i, a_i^j, c_i^j) ∈ D_refl
          log p_θ(c_i^j, a_i | s_i)
 ```
 
-In the paper, training mixes `D_refl` with `D_expert` and runs a single next-token-prediction pass — but this mixing is a **training-time** operation. In this workspace, data generation produces them as separate files (`expert_sft.jsonl` and `reflection_sft.jsonl`); whether and how to mix is the trainer's responsibility downstream.
+In the paper, training mixes `D_refl` with `D_expert` and runs a single next-token-prediction pass — but this mixing is a **training-time** operation. This skill's data-generation stage produces them as separate files (`expert_sft.jsonl` and `reflection_sft.jsonl`); whether and how to mix is the trainer's responsibility downstream.
 
 Whether expert trajectories carry chain-of-thought reasoning matters for comparability between the IL baseline and SR. Check the actual expert data and align the assistant content across the two files consistently; the per-env choice and its rationale go in `envs/<env>/NOTES.md`.
 
@@ -110,7 +110,7 @@ The paper applies several filtering steps:
 - SR drops cases where the reflection LLM's concluded action doesn't match the expert.
 - IWM keeps all rollout triples; invalid-action error messages are retained as training signal.
 
-**These are the paper's choices, not standing rules for this workspace.** Whether to apply any of them is a per-env decision that goes through the filter approval protocol — see `TEAM_GUIDE.md`. Default position for any new env is no filters; add them only with user approval, with the rationale recorded in `envs/<env>/NOTES.md`.
+**These are the paper's choices, not standing rules for the skill.** Whether to apply any of them is a per-env decision — the default position for any new env is no filters. Add them only with explicit user approval, and record the rule and its rationale in `envs/<env>/NOTES.md`.
 
 ## 6. Alternative Action Sampling
 
