@@ -1,6 +1,6 @@
 # SearchQA
 
-> **In progress.** Full pipeline description and results coming soon.
+> **In progress.** Coming soon.
 
 Multi-hop question-answering env, paper §B.5. The agent issues `<search>` queries against a Wikipedia (wiki-18) retrieval server, reads back `<information>...</information>`, and eventually emits `<answer>...</answer>`.
 
@@ -15,15 +15,7 @@ Coming soon.
 
 ## Data output
 
-Available in the [Hugging Face dataset](https://huggingface.co/datasets/osunlp/early-experience) under `searchqa/`:
-
-```
-searchqa/
-├── expert_sft.jsonl
-├── iwm_sft.jsonl
-├── reflection_sft_A.jsonl    # two reflection variants shipped for A/B; use A by default
-└── reflection_sft_B.jsonl
-```
+Coming soon.
 
 ## Reproducibility notes
 

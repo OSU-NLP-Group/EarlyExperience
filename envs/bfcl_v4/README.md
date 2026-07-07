@@ -53,7 +53,7 @@ Both `text` and `fc` variants are provided so downstream training can pick the s
 - **Split**: 75/25 train/held-out by `case_id` with `random.seed(42)`. 3 OOD splits (`long_context`, `miss_func`, `miss_param`) never enter any SFT file.
 - **K for IWM**: 10 alt names per state (structurally satisfiable on every Base case).
 - **K for SR**: 3 alternatives per state.
-- **Proposer / summarizer / reflection models**: DeepSeek V4 Flash (proposer, summarizer, args are schema-bound) / DeepSeek V4 Pro (reflection, needs more nuanced reasoning).
+- **Proposer / summarizer / reflection models**: a fast instruction-following LLM for the proposer and summarizer (both are schema-bound tasks) and a stronger reasoning-capable LLM for reflection generation.
 - **Anti-leak vocabulary filter for SR**: post-hoc grep filter against words like "expert" / "selected" / "chosen" / "correct" / "best" / "optimal" / "preferred" and numbered alt labels ("Action 1", "Alternative #2"). Any SR pipeline should apply an equivalent filter.
 
 For a full reproduction, install the BFCL leaderboard package from upstream (pinned to the 2025-12-17 commit) in its own conda env, and follow the modification strategy above.

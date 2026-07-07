@@ -26,7 +26,9 @@ This repo ships:
 
 ## Data
 
-All SFT files (expert / IWM / reflection) are available on [huggingface](https://huggingface.co/datasets/osunlp/early-experience):
+All SFT files (expert / IWM / reflection) are available on [huggingface](https://huggingface.co/datasets/osunlp/early-experience).
+
+The pipeline is model-agnostic: you can generate this style of data with either a strong general-purpose LLM or a smaller open-source model, and downstream training on the data remains effective across both base and instruction-tuned checkpoints of different sizes.
 
 ## Using the skill
 
