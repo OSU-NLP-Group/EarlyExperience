@@ -104,7 +104,7 @@ For each env, the linked README describes:
 If you find this code or data helpful, please cite:
 
 ```bibtex
-@inproceedings{Ahang2026EarlyExperience,
+@inproceedings{Zhang2026EarlyExperience,
 title={Agent Learning via Early Experience},
 author={Kai Zhang and Xiangchao Chen and Bo Liu and Tianci Xue and Zeyi Liao and Zhihan Liu and Xiyao Wang and Yuting Ning and Zhaorun Chen and Xiaohan Fu and Jian Xie and Yuxuan Sun and Boyu Gou and Qi Qi and Zihang Meng and Jianwei Yang and Ning Zhang and Xian Li and Ashish Shah and Dat Huynh and Hengduo Li and Zi Yang and Xuefei Cao and Lawrence Keunho Jang and Shuyan Zhou and Jiacheng Zhu and Huan Sun and Jason E Weston and Yu Su and Yifan Wu},
 booktitle={Forty-third International Conference on Machine Learning},
