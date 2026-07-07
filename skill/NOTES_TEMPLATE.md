@@ -1,6 +1,6 @@
 # Env-specific NOTES.md — Template
 
-`envs/<env>/NOTES.md` records the decisions, artifacts, and gotchas particular to one environment. It is the single source of truth for anything that is *not* generic across envs (which lives in `METHOD.md` / `method_recap.md` / `pitfalls.md` instead).
+A per-env `NOTES.md` file records the decisions, artifacts, and gotchas particular to one environment. It is the single source of truth for anything that is *not* generic across envs (which lives in `METHOD.md` / `method_recap.md` / `pitfalls.md` instead).
 
 Fill each section only if it applies to your env; delete the rest. The goal is orientation for the next reader, not exhaustive documentation.
 

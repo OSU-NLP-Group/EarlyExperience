@@ -11,13 +11,13 @@ Don't reach for "let me generate experts with an LLM" first. Search in order:
 3. Whether the community has released expert data — follow-up papers or open datasets that reuse this env.
 4. Only if none of the above: generate with an LLM, with explicit user confirmation before the run.
 
-Generation is the last resort, not the first. Document the source and the URL in `envs/<env>/NOTES.md`.
+Generation is the last resort, not the first. Document the source and the URL in the env's `NOTES.md`.
 
 ## Filtering happens at data generation, after human approval
 
-The three files under `envs/<env>/data/sft/` are the final, training-ready, already-filtered dataset. The trainer does not filter — it loads and trains.
+The three SFT files (expert / IWM / reflection) are the final, training-ready, already-filtered dataset. The trainer does not filter — it loads and trains.
 
-But the filter rules themselves are not yours to invent. Before applying any filter, propose the rule to the user with the rationale and an estimate of its effect (how many samples it drops, what kind of samples). Wait for explicit approval. Approved filter rules go into `envs/<env>/NOTES.md`; samples that get dropped are still kept in intermediate artifacts (not in `sft/`) so the decision is reversible.
+But the filter rules themselves are not yours to invent. Before applying any filter, propose the rule to the user with the rationale and an estimate of its effect (how many samples it drops, what kind of samples). Wait for explicit approval. Approved filter rules go into the env's `NOTES.md`; samples that get dropped are still kept in intermediate artifacts (not in `sft/`) so the decision is reversible.
 
 The starting position for any new env is **no filters**. Add them through this approval process only when there's evidence from the smoke run that a specific kind of bad sample is contaminating the data.
 
@@ -29,7 +29,7 @@ If at state `s_i` the env exposes a finite admissible action list and the expert
 
 LLM proposal is the right tool only when the action requires content that the env can't enumerate — a search query, a function call's argument string, a free-form text field.
 
-A single env can mix both regimes within one trajectory: the first step might be a free-form search query (needs LLM) while every later step picks from a list of products and buttons (sample from the list). Don't apply one strategy uniformly — judge per step. Document the choice (per env, and per step type if mixed) in `envs/<env>/NOTES.md`.
+A single env can mix both regimes within one trajectory: the first step might be a free-form search query (needs LLM) while every later step picks from a list of products and buttons (sample from the list). Don't apply one strategy uniformly — judge per step. Document the choice (per env, and per step type if mixed) in the env's `NOTES.md`.
 
 ## Look at the data you generated
 

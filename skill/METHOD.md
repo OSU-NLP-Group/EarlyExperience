@@ -16,7 +16,7 @@ There are two methods under this paradigm. Both share the same high-level struct
 - Also execute the expert action `a_i` to get the expert next state `s_{i+1}`.
 - Collect `D_rollout = {(s_i, a_i^j, s_i^j)}` for all `i ∈ [N], j ∈ [K]`.
 
-K is a per-env hyperparameter. Background and starting points are sketched in `envs/<env>/NOTES.md`; the final value comes from user input and what makes sense for the env.
+K is a per-env hyperparameter. Background and starting points are sketched in the env's `NOTES.md`; the final value comes from user input and what makes sense for the env.
 
 ## 3. Method 1: Implicit World Modeling (IWM)
 
@@ -41,7 +41,7 @@ For each rollout triple, the SFT example is:
 - **user / prompt:** representation of `s_i` + the action `a_i^j`
 - **assistant / completion:** representation of `s_i^j` (the next state)
 
-Some environments need to summarize the raw next state before training (e.g. WebShop uses a ~345-char text summary; SearchQA summarizes retrieved documents). Whether the raw next state is usable, or a summarizer is needed, depends on the env's state format; decide it from the env and confirm with the user, and document the decision in `envs/<env>/NOTES.md`.
+Some environments need to summarize the raw next state before training (e.g. WebShop uses a ~345-char text summary; SearchQA summarizes retrieved documents). Whether the raw next state is usable, or a summarizer is needed, depends on the env's state format; decide it from the env and confirm with the user, and document the decision in the env's `NOTES.md`.
 
 ## 4. Method 2: Self-Reflection (SR)
 
@@ -84,7 +84,7 @@ Output: Directly write the self-reflection monologue, no extra headings,
 disclaimers, or external notes.
 ```
 
-Each environment may extend this with environment-specific situation/action wording, but the four numbered analysis points and the four guidelines should remain. Document any deviation in `envs/<env>/NOTES.md`.
+Each environment may extend this with environment-specific situation/action wording, but the four numbered analysis points and the four guidelines should remain. Document any deviation in the env's `NOTES.md`.
 
 **Training objective.** Next-token prediction over the concatenated `c_i^j ◦ a_i` target, given `s_i`:
 
@@ -95,7 +95,7 @@ L_SR = - Σ over (s_i, a_i^j, c_i^j) ∈ D_refl
 
 In the paper, training mixes `D_refl` with `D_expert` and runs a single next-token-prediction pass — but this mixing is a **training-time** operation. This skill's data-generation stage produces them as separate files (`expert_sft.jsonl` and `reflection_sft.jsonl`); whether and how to mix is the trainer's responsibility downstream.
 
-Whether expert trajectories carry chain-of-thought reasoning matters for comparability between the IL baseline and SR. Check the actual expert data and align the assistant content across the two files consistently; the per-env choice and its rationale go in `envs/<env>/NOTES.md`.
+Whether expert trajectories carry chain-of-thought reasoning matters for comparability between the IL baseline and SR. Check the actual expert data and align the assistant content across the two files consistently; the per-env choice and its rationale go in the env's `NOTES.md`.
 
 **Data composition for SFT framework.**
 - **user / prompt:** representation of `s_i`
@@ -110,7 +110,7 @@ The paper applies several filtering steps:
 - SR drops cases where the reflection LLM's concluded action doesn't match the expert.
 - IWM keeps all rollout triples; invalid-action error messages are retained as training signal.
 
-**These are the paper's choices, not standing rules for the skill.** Whether to apply any of them is a per-env decision — the default position for any new env is no filters. Add them only with explicit user approval, and record the rule and its rationale in `envs/<env>/NOTES.md`.
+**These are the paper's choices, not standing rules for the skill.** Whether to apply any of them is a per-env decision — the default position for any new env is no filters. Add them only with explicit user approval, and record the rule and its rationale in the env's `NOTES.md`.
 
 ## 6. Alternative Action Sampling
 
@@ -119,7 +119,7 @@ The paper varies sampling strategy per environment because action spaces differ 
 - **Enumerable action spaces** (e.g. admissible-action lists at each step): sample alternatives directly from the list. No LLM proposing needed.
 - **Open or large action spaces** (free-form queries, web DOM interactions, typed tool calls): use a policy LLM to propose alternatives, often with temperature variation and deduplication.
 
-The specific strategy for each env — K, temperature, fallback paths, env-specific constraints — depends on what the env actually exposes and what the user wants. `envs/<env>/NOTES.md` sketches the starting orientation per env, but the working choice is yours to make from the env's real interface and confirm with the user. Do not assume one env's strategy applies to another.
+The specific strategy for each env — K, temperature, fallback paths, env-specific constraints — depends on what the env actually exposes and what the user wants. the env's `NOTES.md` sketches the starting orientation per env, but the working choice is yours to make from the env's real interface and confirm with the user. Do not assume one env's strategy applies to another.
 
 ## 7. Hard constraint on data generation
 
