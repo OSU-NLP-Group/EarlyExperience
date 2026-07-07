@@ -94,7 +94,7 @@ Multi-hop question-answering env (paper §B.5). **Coming soon.** See [envs/searc
 
 ### WebArena — [envs/webarena](envs/webarena/) 🚧
 
-Realistic full-stack web-navigation env (paper §B.8). **In progress.** Expert side is sourced from the [Agent Data Protocol (ADP)](https://arxiv.org/abs/2510.07059) paper's 4 WebArena-relevant expert sources. See [envs/webarena/README.md](envs/webarena/README.md).
+Realistic full-stack web-navigation env (paper §B.8). **In progress — data released; pipeline description and results coming soon.** Expert side is sourced from the [Agent Data Protocol (ADP)](https://arxiv.org/abs/2510.07059) paper's 4 WebArena-relevant expert sources. See [envs/webarena/README.md](envs/webarena/README.md).
 
 ---
 

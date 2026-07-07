@@ -1,6 +1,6 @@
 # WebArena
 
-> **In progress.** Data is released; full pipeline description and results coming soon.
+> **In progress — data released; pipeline description and results coming soon.**
 
 Realistic web-navigation env, paper §B.8. The agent navigates a full-stack simulated web application (Gitlab, Reddit-like forum, e-commerce admin, maps, ...) using DOM interaction to complete natural-language tasks.
 
