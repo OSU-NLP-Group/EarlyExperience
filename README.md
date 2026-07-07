@@ -1,10 +1,11 @@
-# Early Experience
+# Early Experience (ICML 2026)
 
 <p align="center">
   <a href="https://arxiv.org/pdf/2510.08558"><img src="https://img.shields.io/badge/arXiv-2510.08558-b31b1b.svg" alt="arXiv"></a>
   <a href="#"><img src="https://img.shields.io/badge/🤗_HuggingFace-Coming_Soon-yellow" alt="Hugging Face"></a>
 </p>
----
+
+-----
 
 ## Introduction
 
