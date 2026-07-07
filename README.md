@@ -30,15 +30,11 @@ All SFT files (expert / IWM / reflection) are available on [huggingface](https:/
 
 ## Using the skill
 
-The [`skill/`](skill/) directory bundles everything an agent needs to produce early-experience data for a new env — `SKILL.md` (workflow router + hard rules), `METHOD.md` (paper method definitions and reflection prompt template), `method_recap.md` (non-obvious design decisions), `pitfalls.md` (accumulated gotchas), `NOTES_TEMPLATE.md` (skeleton for per-env decision log), and `paper.pdf` for cross-reference.
-
-To use with your code agent, drop the skill into your project in one line:
+The [`skill/`](skill/) directory is a self-contained workflow guide for a code agent to generate early-experience SFT data (expert / IWM / reflection) for any agent env — see [`skill/README.md`](skill/README.md) for what's inside. Drop it into your project in one line and point the agent at `SKILL.md`:
 
 ```bash
 git clone https://github.com/OSU-NLP-Group/EarlyExperience.git && cp -r EarlyExperience/skill /path/to/your/project/
 ```
-
-Then instruct the agent: *"Read `skill/SKILL.md` before doing any early-experience data-generation work."* The skill walks the agent through method mapping, alternative-action sampling design, reflection generation, and the common re-implementation pitfalls.
 
 ## Main results
 
