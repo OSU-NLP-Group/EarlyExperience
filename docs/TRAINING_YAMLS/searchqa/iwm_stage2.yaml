@@ -1,0 +1,39 @@
+# SearchQA IWM — Stage 2 (continue with imitation on expert)
+# Paper §3 two-stage pipeline.
+
+### model
+model_name_or_path: saves/searchqa_iwm_stage1   # ← stage 1 输出
+trust_remote_code: true
+
+### method
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: examples/deepspeed/ds_z3_config.json
+
+### dataset
+dataset: searchqa_expert
+dataset_dir: /mnt/data/xiangchao/verl-agent-ee-final/envs/searchqa/data/sft
+template: qwen3_5_nothink
+cutoff_len: 8192
+overwrite_cache: true
+preprocessing_num_workers: 16
+
+### output
+output_dir: saves/searchqa_iwm_stage2
+logging_steps: 10
+save_steps: 500
+save_total_limit: 2
+plot_loss: true
+overwrite_output_dir: true
+report_to: none
+
+### train
+per_device_train_batch_size: 2
+gradient_accumulation_steps: 16
+learning_rate: 1.0e-5
+num_train_epochs: 3.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.0
+bf16: true
+ddp_timeout: 180000000

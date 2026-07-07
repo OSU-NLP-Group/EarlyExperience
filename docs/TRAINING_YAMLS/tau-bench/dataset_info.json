@@ -1,0 +1,53 @@
+{
+  "tau_bench_expert": {
+    "file_name": "expert_sft.jsonl",
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "messages",
+      "tools": "tools"
+    },
+    "tags": {
+      "role_tag": "role",
+      "content_tag": "content",
+      "user_tag": "user",
+      "assistant_tag": "assistant",
+      "system_tag": "system",
+      "function_tag": "tool",
+      "observation_tag": "tool"
+    }
+  },
+  "tau_bench_iwm": {
+    "file_name": "iwm_sft.jsonl",
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "messages",
+      "tools": "tools"
+    },
+    "tags": {
+      "role_tag": "role",
+      "content_tag": "content",
+      "user_tag": "user",
+      "assistant_tag": "assistant",
+      "system_tag": "system",
+      "function_tag": "tool",
+      "observation_tag": "tool"
+    }
+  },
+  "tau_bench_reflection": {
+    "file_name": "reflection_sft.jsonl",
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "messages",
+      "tools": "tools"
+    },
+    "tags": {
+      "role_tag": "role",
+      "content_tag": "content",
+      "user_tag": "user",
+      "assistant_tag": "assistant",
+      "system_tag": "system",
+      "function_tag": "tool",
+      "observation_tag": "tool"
+    }
+  }
+}

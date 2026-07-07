@@ -1,0 +1,92 @@
+{
+  "bfcl_expert_text": {
+    "file_name": "expert_sft_text.jsonl",
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "messages"
+    },
+    "tags": {
+      "role_tag": "role",
+      "content_tag": "content",
+      "user_tag": "user",
+      "assistant_tag": "assistant",
+      "system_tag": "system"
+    }
+  },
+  "bfcl_iwm_text": {
+    "file_name": "iwm_sft_text.jsonl",
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "messages"
+    },
+    "tags": {
+      "role_tag": "role",
+      "content_tag": "content",
+      "user_tag": "user",
+      "assistant_tag": "assistant",
+      "system_tag": "system"
+    }
+  },
+  "bfcl_reflection_text": {
+    "file_name": "reflection_sft_text.jsonl",
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "messages"
+    },
+    "tags": {
+      "role_tag": "role",
+      "content_tag": "content",
+      "user_tag": "user",
+      "assistant_tag": "assistant",
+      "system_tag": "system"
+    }
+  },
+  "bfcl_expert_fc": {
+    "file_name": "expert_sft_fc.jsonl",
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "messages"
+    },
+    "tags": {
+      "role_tag": "role",
+      "content_tag": "content",
+      "user_tag": "user",
+      "assistant_tag": "assistant",
+      "system_tag": "system",
+      "function_tag": "tool",
+      "observation_tag": "tool"
+    }
+  },
+  "bfcl_iwm_fc": {
+    "file_name": "iwm_sft_fc.jsonl",
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "messages"
+    },
+    "tags": {
+      "role_tag": "role",
+      "content_tag": "content",
+      "user_tag": "user",
+      "assistant_tag": "assistant",
+      "system_tag": "system",
+      "function_tag": "tool",
+      "observation_tag": "tool"
+    }
+  },
+  "bfcl_reflection_fc": {
+    "file_name": "reflection_sft_fc.jsonl",
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "messages"
+    },
+    "tags": {
+      "role_tag": "role",
+      "content_tag": "content",
+      "user_tag": "user",
+      "assistant_tag": "assistant",
+      "system_tag": "system",
+      "function_tag": "tool",
+      "observation_tag": "tool"
+    }
+  }
+}
