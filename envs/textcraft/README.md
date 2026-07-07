@@ -2,7 +2,7 @@
 
 Text-based Minecraft-style crafting game (originally from [`archiki/ADaPT`](https://github.com/archiki/ADaPT)). At each reset the agent gets a goal item and a small set of recipes (target recipe + ≤10 distractors), and must reach the goal via `get` (gather base items) and `craft` (combine ingredients).
 
-**Not in the paper.** Paper Appendix B covers 8 envs; TextCraft is not one of them. All per-env hyperparameters (K, sampling strategy, filter rules) are decided locally following the same conventions used for paper envs.
+**Not in the paper.** All per-env hyperparameters (K, sampling strategy, filter rules) are decided locally following the same conventions used for paper envs.
 
 ## Upstream
 

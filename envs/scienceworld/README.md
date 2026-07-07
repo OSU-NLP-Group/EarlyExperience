@@ -49,7 +49,7 @@ scienceworld/
 - **Trajectory source**: `AgentGym/AgentTraj-L` (SciWorld split) on Hugging Face — 2,120 trajectories, 42,178 (state, action) pairs. Note: paper §B.6 cites 14,506 pairs; discrepancy unresolved (paper may have used a filtered subset).
 - **K for IWM**: 3 non-expert alternatives per state (plus expert itself = 4 triples per state).
 - **K for SR**: 3 alternatives (drop to 2 when the policy model is Llama-3.1-8B-Instruct, per paper §B.6).
-- **One-shot example**: paper §B.6 specifies a one-shot in-context example. AgentGym's bundled prompt does *not* include it — we add it in the wrapper, used identically at both SR generation and inference.
+- **One-shot example**: paper §B.6 specifies a one-shot in-context example. AgentGym's bundled prompt does *not* include it — add it in the client-side prompt, used identically at both SR generation and inference.
 - **Admissible-list caching**: the admissible list is state-dependent (recomputed every step). Do not cache it across steps in the client.
 - **Action canonicalization**: AgentGym's client adapter enforces specific surface forms (e.g. `drop` not `put down`, `wait1` for single-step wait). Any IWM/SR alt strings must match these forms so expert and rollout entries share a vocabulary.
 - **Server concurrency**: default is a single uvicorn process backed by one JVM instance. For real parallelism, run multiple `sciworld` servers on different ports and round-robin.
