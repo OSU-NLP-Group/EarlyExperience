@@ -1,19 +1,14 @@
-# EarlyExperience
+# Early Experience
 
 <p align="center">
   <a href="https://arxiv.org/pdf/2510.08558"><img src="https://img.shields.io/badge/arXiv-2510.08558-b31b1b.svg" alt="arXiv"></a>
   <a href="#"><img src="https://img.shields.io/badge/🤗_HuggingFace-Coming_Soon-yellow" alt="Hugging Face"></a>
 </p>
-
-<p align="center">
-  <b>🎉 Our paper is being presented at ICML 2026.</b>
-</p>
-
 ---
 
 ## Introduction
 
-Official code and data release for **"Agent Learning via Early Experience"** (Zhang et al., 2025, [arXiv:2510.08558](https://arxiv.org/abs/2510.08558)).
+Supported by [OSU NLP](https://github.com/OSU-NLP-Group) and [NeoCognition](https://neocognition.io/), This is an open-source code and data reproduction for **"Agent Learning via Early Experience"** (Zhang et al., ICML 2026), done by [Xiangchao Chen](https://chasechen.xyz/), [Tinghui Zhu](https://darthzhu.github.io/), and [Kai Zhang](https://drogozhang.github.io/).
 
 The paper introduces a training paradigm sitting between imitation learning (IL) and reinforcement learning (RL) — one that is applicable to environments without verifiable reward signals or where long-horizon rollouts make RL impractical. The agent collects its own interaction data by proposing non-expert actions at expert-visited states, then uses the *resulting next states* as supervision — without any reward.
 
@@ -128,14 +123,14 @@ rclone copy ggdrive:Early-Experience-Reproduce/data/<env>/ /local/dest/
 *Training pipeline documentation to be added.*
 
 ## Citation
-
-If you use this code or data in your research, please cite:
+If you find this code or data helpful, please cite:
 
 ```bibtex
-@article{zhang2025earlyexperience,
-  title={Agent Learning via Early Experience},
-  author={Zhang, et al.},
-  journal={arXiv preprint arXiv:2510.08558},
-  year={2025}
+@inproceedings{Ahang2026EarlyExperience,
+title={Agent Learning via Early Experience},
+author={Kai Zhang and Xiangchao Chen and Bo Liu and Tianci Xue and Zeyi Liao and Zhihan Liu and Xiyao Wang and Yuting Ning and Zhaorun Chen and Xiaohan Fu and Jian Xie and Yuxuan Sun and Boyu Gou and Qi Qi and Zihang Meng and Jianwei Yang and Ning Zhang and Xian Li and Ashish Shah and Dat Huynh and Hengduo Li and Zi Yang and Xuefei Cao and Lawrence Keunho Jang and Shuyan Zhou and Jiacheng Zhu and Huan Sun and Jason E Weston and Yu Su and Yifan Wu},
+booktitle={Forty-third International Conference on Machine Learning},
+year={2026},
+url={https://openreview.net/forum?id=N3dXUHY5dD}
 }
 ```
