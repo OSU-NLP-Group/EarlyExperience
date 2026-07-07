@@ -1,0 +1,40 @@
+# SearchQA IL (Behavior Cloning baseline)
+# Paper §B.5: 3 epochs, lr=1e-5, ctx=8192, per_device=2, grad_accum=16
+#             ZeRO-3, 4× H100, full-parameter tuning
+
+### model
+model_name_or_path: Qwen/Qwen3.5-9B
+trust_remote_code: true
+
+### method
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: examples/deepspeed/ds_z3_config.json
+
+### dataset
+dataset: searchqa_expert
+dataset_dir: /mnt/data/xiangchao/verl-agent-ee-final/envs/searchqa/data/sft
+template: qwen3_5_nothink
+cutoff_len: 8192
+overwrite_cache: true
+preprocessing_num_workers: 16
+
+### output
+output_dir: saves/searchqa_il
+logging_steps: 10
+save_steps: 500
+save_total_limit: 2
+plot_loss: true
+overwrite_output_dir: true
+report_to: none
+
+### train (effective bs = 4 GPU × 2 × 16 = 128)
+per_device_train_batch_size: 2
+gradient_accumulation_steps: 16
+learning_rate: 1.0e-5
+num_train_epochs: 3.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.0
+bf16: true
+ddp_timeout: 180000000

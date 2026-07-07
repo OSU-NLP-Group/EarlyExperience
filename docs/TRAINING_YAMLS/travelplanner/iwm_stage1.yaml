@@ -1,0 +1,40 @@
+# TravelPlanner IWM — Stage 1 (WM warm-up)
+# Paper §B.7: "For imitation learning and implicit world modeling, we train for 5 epochs
+#              with learning rate of 1e−5 and cosine scheduler."
+
+### model
+model_name_or_path: Qwen/Qwen3.5-9B
+trust_remote_code: true
+
+### method
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: examples/deepspeed/ds_z3_config.json
+
+### dataset
+dataset: travelplanner_iwm
+dataset_dir: /mnt/data/xiangchao/verl-agent-ee-final/envs/travelplanner/data/sft
+template: qwen3_5_nothink
+cutoff_len: 32768
+overwrite_cache: true
+preprocessing_num_workers: 16
+
+### output
+output_dir: saves/travelplanner_iwm_stage1
+logging_steps: 10
+save_steps: 1000
+save_total_limit: 1
+plot_loss: true
+overwrite_output_dir: true
+report_to: none
+
+### train
+per_device_train_batch_size: 16
+gradient_accumulation_steps: 1
+learning_rate: 1.0e-5
+num_train_epochs: 1.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.0
+bf16: true
+ddp_timeout: 180000000

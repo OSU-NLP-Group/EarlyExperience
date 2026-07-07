@@ -1,0 +1,28 @@
+# Under envs/<env>/, only Markdown files at the env-folder level are tracked;
+# anything inside a sub-subfolder (upstream clones, generated data, venvs) is not.
+# Exceptions: (a) registered git submodule mountpoints are re-included so their
+# gitlinks (a single SHA pointing at the submodule's commit) can be tracked;
+# (b) env-side pipeline code that lives outside the submodule.
+# Add one re-include line per submodule or code dir as it is added.
+# Python bytecode caches — never tracked
+**/__pycache__/
+*.pyc
+
+envs/*/*/
+!envs/scienceworld/agentgym/
+!envs/scienceworld/scripts/
+!envs/searchqa/
+!envs/bfcl_v4/gorilla/
+!envs/bfcl_v4/scripts/
+!envs/tau-bench/tau-bench/
+!envs/tau-bench/scripts/
+!envs/appworld/verl-agent/
+!envs/appworld/scripts/
+!envs/textcraft/agentgym/
+!envs/textcraft/scripts/
+!envs/travelplanner/TravelPlanner/
+!envs/travelplanner/scripts/
+!envs/alfworld-paper/verl-agent-ee/
+!envs/alfworld-paper/scripts/
+!envs/webshop-paper/verl-agent/
+!envs/webshop-paper/scripts/

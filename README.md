@@ -1,2 +1,141 @@
 # EarlyExperience
-An open-source reproduction of Early Experience "Agent Learning via Early Experience" (ICML 2026)
+
+<p align="center">
+  <a href="https://arxiv.org/pdf/2510.08558"><img src="https://img.shields.io/badge/arXiv-2510.08558-b31b1b.svg" alt="arXiv"></a>
+  <a href="#"><img src="https://img.shields.io/badge/🤗_HuggingFace-Coming_Soon-yellow" alt="Hugging Face"></a>
+</p>
+
+<p align="center">
+  <b>🎉 Our paper is being presented at ICML 2026.</b>
+</p>
+
+---
+
+## Introduction
+
+Official code and data release for **"Agent Learning via Early Experience"** (Zhang et al., 2025, [arXiv:2510.08558](https://arxiv.org/abs/2510.08558)).
+
+The paper introduces a training paradigm sitting between imitation learning (IL) and reinforcement learning (RL) — one that is applicable to environments without verifiable reward signals or where long-horizon rollouts make RL impractical. The agent collects its own interaction data by proposing non-expert actions at expert-visited states, then uses the *resulting next states* as supervision — without any reward.
+
+Two concrete methods under this paradigm:
+
+- **Implicit World Modeling (IWM)** — train the policy to predict the next state given (state, action) on the rollout data, then continue with imitation on expert data. A two-stage pipeline.
+- **Self-Reflection (SR)** — mix the reflection data (LLM-authored monologues comparing expert vs alternative actions) with expert data, and train with standard next-token prediction.
+
+This repo ships:
+
+- **A Claude Code skill** (`.claude/skills/early-experience-data/`) that captures the general methodology and pitfalls of generating EE data for any env.
+- **Ten env-specific implementation notes** (`envs/<env>/`) with per-env modification strategies, data locations, and reproducibility notes.
+- **Pre-generated SFT data** (expert / IWM / reflection) on Google Drive for every env we've stabilized.
+
+## Using the skill
+
+The Claude Code skill in this repo — [`.claude/skills/early-experience-data/`](.claude/skills/early-experience-data/) — captures the general workflow, method mapping, and pitfalls of generating EE data for a new env. To use it in your own project:
+
+```bash
+cp -r .claude/skills/early-experience-data /path/to/your/project/.claude/skills/
+```
+
+Then in any Claude Code session running in that project, ask about generating early-experience data for an env you're setting up — the skill auto-triggers and walks the agent through method mapping, alternative-action sampling design, reflection generation, and the common re-implementation pitfalls documented per env.
+
+## Main results
+
+*Main table to be finalized.*
+
+| Env | IL | IWM | SR |
+|---|---:|---:|---:|
+| ALFWorld       | TBD | TBD | TBD |
+| WebShop        | TBD | TBD | TBD |
+| ScienceWorld   | TBD | TBD | TBD |
+| BFCLv3         | TBD | TBD | TBD |
+| TravelPlanner  | TBD | TBD | TBD |
+| TextCraft      | TBD | TBD | TBD |
+| AppWorld       | TBD | TBD | TBD |
+
+Note that this release uses a **unified training setup** across all envs — same base model, same optimizer, same effective batch and learning rate — which differs slightly from the per-env hyperparameters described in the paper's Appendix B. All numbers above are reported from the final checkpoint of a single one-shot training run (no ensembling, no re-runs).
+
+## Environments
+
+Ten envs are represented in this release. Seven have been stabilized and validated end-to-end (data → training → eval). Three are marked TBD — data ships as provisional, but the training-eval loop is not yet closed.
+
+### ALFWorld — [envs/alfworld](envs/alfworld/)
+
+Text-based household task env (paper §B.1). The agent solves ALFRED-style tasks like *"put a clean fork in cabinet"* by emitting admissible commands (`go to countertop 1`, `pick up fork 1`, ...) in a TextWorld-simulated home. IWM alternatives come from the fully-enumerable admissible-commands list — no LLM proposer needed. See [envs/alfworld/README.md](envs/alfworld/README.md) for the modification strategy and reproducibility notes.
+
+### WebShop — [envs/webshop](envs/webshop/)
+
+E-commerce shopping env (paper §B.2). The agent handles instructions like *"find a lightweight running jacket under $50"* through `search[...]` and `click[...]` actions. Alternatives at each expert step are sampled from the state-appropriate action space (alternative product clicks on a results page, alternative query reformulations for search states). See [envs/webshop/README.md](envs/webshop/README.md).
+
+### BFCL v4 (multi-turn function calling) — [envs/bfcl_v4](envs/bfcl_v4/)
+
+Multi-turn function-calling benchmark (paper §B.3). Because sim state is pure-Python and `copy.deepcopy`-able, alternative-action probing is exceptionally cheap: no re-replay, no HTTP env spin-up. IWM uses `K=10` alt names sampled structurally from the involved sim classes, with one LLM call filling all K argument sets per state. See [envs/bfcl_v4/README.md](envs/bfcl_v4/README.md).
+
+### Tau-Bench — [envs/tau-bench](envs/tau-bench/) 🚧
+
+Customer-service env (paper §B.4). **Status: TBD** — reproduction not yet stable. Provisional data ships on Drive. See [envs/tau-bench/README.md](envs/tau-bench/README.md).
+
+### SearchQA — [envs/searchqa](envs/searchqa/) 🚧
+
+Multi-hop QA env (paper §B.5). **Status: TBD.** Provisional data ships on Drive; not yet validated. See [envs/searchqa/README.md](envs/searchqa/README.md).
+
+### ScienceWorld — [envs/scienceworld](envs/scienceworld/)
+
+Interactive science-lab env (paper §B.6). Requires the *admissible-action list at every state*; we patch AgentGym's HTTP env-server to expose an `/admissible_actions` endpoint backed by ScienceWorld's own combination generator. IWM samples `K=3` uniform non-expert alts; SR uses policy-proposed alts with refill-from-admissible. See [envs/scienceworld/README.md](envs/scienceworld/README.md).
+
+### TravelPlanner — [envs/travelplanner](envs/travelplanner/)
+
+Multi-day travel-planning env (paper §B.7). The whole plan is submitted in one turn, which makes SR the dominant methodological challenge: reflections must justify *specific slot fills* against constraint-stratified alternatives (budget / cuisine / min-nights / city-sequence / mode-chain). Two reflection variants ship: `full` (~124 words) and `compressed` (~50 words). See [envs/travelplanner/README.md](envs/travelplanner/README.md).
+
+### WebArena — [envs/webarena](envs/webarena/) 🚧
+
+Realistic full-stack web-navigation env (paper §B.8). **Status: TBD.** Provisional data ships on Drive; expert side is sourced from the [Agent Data Protocol (ADP)](https://arxiv.org/abs/2510.07059) paper's 4 WebArena-relevant expert sources. See [envs/webarena/README.md](envs/webarena/README.md).
+
+### AppWorld — [envs/appworld](envs/appworld/)
+
+Free-form code-action agent env. The agent writes Python that runs in a sandboxed REPL with access to mock apps (spotify, venmo, gmail, ...). The cleanest EE candidate we support — expert data is free (via the AppWorld SDK's ground-truth programs), and total pipeline cost measured at ~$3 for the full train split. Both `full` and `balanced` IWM variants ship. See [envs/appworld/README.md](envs/appworld/README.md).
+
+### TextCraft — [envs/textcraft](envs/textcraft/)
+
+Text-based Minecraft-style crafting game (not in paper). Included as an extra env exercising the same EE recipe on a simpler action space. Admissible actions are entirely client-derivable from `(commands_list, inventory)` — no server-side patch needed. See [envs/textcraft/README.md](envs/textcraft/README.md).
+
+---
+
+For each env, the linked README describes:
+- The upstream env repo (with license and version pin).
+- Our high-level modification strategy — the *why* and *what* of the changes, not code-level detail. Enough to guide a reimplementation on your own fork.
+- The method mapping (how EE's expert / IWM alt / SR reflection concepts realize concretely in this env).
+- Data output locations on Google Drive.
+- Key hyperparameters (K, sampling strategy) and re-implementation gotchas.
+
+## Data
+
+All SFT files (expert / IWM / reflection) are hosted on Google Drive:
+
+```
+https://drive.google.com/drive/folders/19envwwSdsCmFp8tNP8iwofTeVCltrrFa
+```
+
+Organized as `data/<env>/*.jsonl` (with `_v2` / `_v3` sibling folders for the envs we've iterated on). Each env's README documents the canonical latest paths for that env.
+
+To fetch programmatically, [`rclone`](https://rclone.org/) works well:
+
+```bash
+rclone copy ggdrive:Early-Experience-Reproduce/data/<env>/ /local/dest/
+```
+
+## Training
+
+*Training pipeline documentation to be added.*
+
+## Citation
+
+If you use this code or data in your research, please cite:
+
+```bibtex
+@article{zhang2025earlyexperience,
+  title={Agent Learning via Early Experience},
+  author={Zhang, et al.},
+  journal={arXiv preprint arXiv:2510.08558},
+  year={2025}
+}
+```
