@@ -99,7 +99,7 @@ characteristic and may hit the same issue.
 **Env where first hit**: scienceworld
 **Date**: 2026-05-17
 
-**What happened**: The first version of the SR reflection prompt followed METHOD.md §4.3 closely — input slots labeled "Expert Action (a_i)" and "Alternative Actions: 1. ... 2. ...". The reflection LLM we used echoed those labels into its monologue ~16% of the time ("the expert action is X, which makes sense because...", "Action 1 would be less helpful because..."). This breaks the entire point of the SR CoT: at inference the trained model has no privileged "expert" label, and the CoT must be the model's *own* reasoning that arrives at the chosen action. Training on text that announces the expert label corrupts the supervision signal.
+**What happened**: An early version of the SR reflection prompt followed METHOD.md §4.3 closely — input slots labeled "Expert Action (a_i)" and "Alternative Actions: 1. ... 2. ...". A reflection LLM handed such an input echoed those labels into its monologue ~16% of the time ("the expert action is X, which makes sense because...", "Action 1 would be less helpful because..."). This breaks the entire point of the SR CoT: at inference the trained model has no privileged "expert" label, and the CoT must be the model's *own* reasoning that arrives at the chosen action. Training on text that announces the expert label corrupts the supervision signal.
 
 **Root cause**: LLMs default to "essay justifying a known answer" mode when handed a labeled answer in the input — this is the default training distribution. The model has no inherent reason to suppress labels just because the next-token target says it should.
 

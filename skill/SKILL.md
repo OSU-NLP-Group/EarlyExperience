@@ -29,14 +29,24 @@ The output of this project is JSONL files under `envs/<env>/data/sft/`. **Traini
 Before any work in `envs/<env>/`, read in this order:
 
 1. `METHOD.md` — what IWM and SR actually are, and the reflection prompt template. This is the source of truth for the method.
-2. team conventions — global rules: LLM choice for data generation, API usage, the pre-call gate, the filter approval protocol, the deployment checkpoint, version control, submodule policy.
-3. `skill/method_recap.md` — short list of decisions where the right answer is non-obvious. Use as a runbook, not as a tutorial.
-4. `skill/pitfalls.md` — accumulated gotchas from previous envs. Skim before each new env in case something carries over.
-5. `envs/<env>/NOTES.md` if it exists — env-specific decisions and orientation already recorded.
+2. `skill/method_recap.md` — short list of decisions where the right answer is non-obvious. Use as a runbook, not as a tutorial.
+3. `skill/pitfalls.md` — accumulated gotchas from previous envs. Skim before each new env in case something carries over.
+4. `envs/<env>/NOTES.md` if it exists — env-specific decisions and orientation already recorded.
 
 If any of these files is missing or empty, surface it as a question rather than guessing.
 
-**On conflicts between layers.** For project-wide mechanics (LLM choice, gates, version control, submodule policy, output layout shape), team conventions and this skill win. For **env-specific** content (state representation, K, sampling strategy, prompt extensions, filtering rationale, anything tied to one env's interface or paper section), the env's `NOTES.md` is closer to truth than the generic guidance here. **But never silently resolve a conflict.** If you notice that NOTES.md says one thing and SKILL.md / team conventions / METHOD.md says another, stop and surface the conflict to the user before proceeding — the usual outcome is that NOTES.md needs a correction, and the user will edit it.
+**On conflicts between layers.** For project-wide mechanics (gates, output layout shape), this skill wins. For **env-specific** content (state representation, K, sampling strategy, prompt extensions, filtering rationale, anything tied to one env's interface or paper section), the env's `NOTES.md` is closer to truth than the generic guidance here. **But never silently resolve a conflict.** If you notice that NOTES.md says one thing and SKILL.md / METHOD.md says another, stop and surface the conflict to the user before proceeding — the usual outcome is that NOTES.md needs a correction, and the user will edit it.
+
+## Step 0: Ask the user which generator model to use
+
+**Before writing any pipeline code or making any LLM API call, ask the user which model to use for the generation stages of this pipeline** — alternative-action proposal (when the action space isn't fully enumerable), state/observation summarization (when the raw next-state text is too noisy), and self-reflection CoT generation.
+
+Explain the choice to the user:
+
+- **The paper's method uses the base policy model itself** as the generator — the same model that will be trained. This is what "self" in Self-Reflection literally refers to: the model reflects on its own alternative actions using its own capacity. The paper's core claim is that base-model exploration and self-reflection alone can improve over training on expert trajectories, **without any external stronger model**. This matters especially in environments without verifiable rewards where RL is impractical.
+- **Another model — stronger, or just different — is also a valid choice.** The pipeline works with any capable instruction-following LLM. Use a stronger one if you care more about data quality than paper-faithful reproduction, or a smaller / faster one if cost is the constraint.
+
+Neither is more "correct" — the choice is up to the user. Record the decision in `envs/<env>/NOTES.md` under a "Model choice for data generation" line, then use that model consistently for all three generation stages in this env. If later stages want to switch, surface the change to the user.
 
 ## Hard rules (non-negotiable)
 

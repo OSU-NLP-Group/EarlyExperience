@@ -28,8 +28,6 @@ This repo ships:
 
 All SFT files (expert / IWM / reflection) are available on [huggingface](https://huggingface.co/datasets/osunlp/early-experience).
 
-The pipeline is model-agnostic: you can generate this style of data with either a strong general-purpose LLM or a smaller open-source model, and downstream training on the data remains effective across both base and instruction-tuned checkpoints of different sizes.
-
 ## Using the skill
 
 The [`skill/`](skill/) directory contains three files — `SKILL.md` (workflow), `method_recap.md` (design decisions), `pitfalls.md` (accumulated gotchas) — that together specify how to produce early-experience data for a new env.

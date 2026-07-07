@@ -26,7 +26,7 @@ Two conceptual pieces layered on top of the verl-agent AppWorld wrapper:
 | Next state | stdout / printed objects / exception messages returned by `env.execute(code)` |
 | Reflection target | expert code + LLM-authored monologue |
 
-**Key insight for AppWorld**: expert data is free (SDK ground truth); IWM cost is one proposer call per state + K env probes. The full 931-state train split at K=10 costs just a few dollars using a fast general-purpose LLM as the proposer.
+**Key insight for AppWorld**: expert data is free (SDK ground truth); IWM cost is one proposer call per state + K env probes. Total cost scales linearly with the number of states and K, and depends on the generator model chosen (see `skill/SKILL.md`).
 
 ## Data output
 
@@ -46,7 +46,7 @@ Both `full` and `balanced` IWM variants are provided so downstream training can 
 
 - **Trajectory source**: AppWorld SDK ground-truth programs for the `train` split (90 tasks, 931 SA pairs).
 - **State re-synchronization**: AppWorld has no native snapshot API, so to probe alternatives at step `i` we spin up a fresh env, replay `expert_actions[0..i-1]`, then execute the alternative — the same `O(K · N²)` pattern any AppWorld EE implementation must follow.
-- **Proposer**: a fast general-purpose LLM with structured output; args and code candidates schema-bound so temperature-1 sampling is stable.
+- **Proposer**: any LLM with structured output; args and code candidates schema-bound so temperature-1 sampling is stable. See `skill/SKILL.md` for the model-choice discussion.
 - **K for IWM**: the pipeline is designed so downstream K can be chosen at build time (data has ≥30 env-meaningful alternatives at 93.6% of states). `iwm_sft_balanced.jsonl` clips to a fixed per-state K.
 - **Server concurrency caveat**: AppWorld's server has no multi-tenancy (a global `world` object). Any parallel probing must launch one server process per worker — running K workers against a shared server silently races and corrupts state.
 
