@@ -42,10 +42,10 @@ git clone https://github.com/OSU-NLP-Group/EarlyExperience.git && cp -r EarlyExp
 
 | Env | Model | IL | IWM | Δ vs IL | SR | Δ vs IL |
 |---|---|---:|---:|---:|---:|---:|
-| ALFWorld       | Qwen2.5 7B Instruct  | 58.6% | 68.8% | **+10.2%** | **74.2%** | **+15.6%** |
-| WebShop        | Qwen2.5 7B Instruct  | 39.1% | 48.4% | **+9.3%**  | **55.5%** | **+16.4%** |
+| ALFWorld       | Qwen2.5 7B Instruct  | 58.6% | 68.8% | +10.2% | **74.2%** | **+15.6%** |
+| WebShop        | Qwen2.5 7B Instruct  | 39.1% | 48.4% | +9.3%  | **55.5%** | **+16.4%** |
 | BFCL           | Qwen2.5 7B Instruct  | 44.9% | **51.1%** | **+6.2%**  | 49.6% | +4.7% |
-| TravelPlanner  | Qwen2.5 7B Instruct  | 25.0% | 29.4% | **+4.4%**  | **30.0%** | **+5.0%** |
+| TravelPlanner  | Qwen2.5 7B Instruct  | 25.0% | 29.4% | +4.4%  | **30.0%** | **+5.0%** |
 | TextCraft      | Qwen2.5 7B Instruct  | 73.0% | **76.8%** | **+3.9%**  | 74.5% | +1.5% |
 | ScienceWorld   | Qwen2.5 7B Instruct  | 65.4% | **68.6%** | **+3.2%**  | 66.0% | +0.6% |
 | AppWorld       | Qwen2.5 14B Instruct | 43.7% | **59.7%** | **+16.0%** | 51.0% | +7.3% |
