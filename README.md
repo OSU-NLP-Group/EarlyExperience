@@ -5,6 +5,10 @@
   <a href="https://huggingface.co/datasets/osunlp/early-experience"><img src="https://img.shields.io/badge/🤗_HuggingFace-Dataset-yellow" alt="Hugging Face Dataset"></a>
 </p>
 
+<!-- yarkr:badges:start -->
+[![Indexed on Yarkr](https://api.yarkr.com/functions/v1/api/api/v1/badges/repos/OSU-NLP-Group/EarlyExperience/version.svg)](https://yarkr.com/arks/osu-nlp-group/earlyexperience)
+<!-- yarkr:badges:end -->
+
 ---
 
 ## Introduction
@@ -117,3 +121,35 @@ year={2026},
 url={https://openreview.net/forum?id=N3dXUHY5dD}
 }
 ```
+
+<!-- yarkr:install:start -->
+## Install with Yarkr
+
+This repo is indexed on [Yarkr](https://yarkr.com/arks/osu-nlp-group/earlyexperience) as the ark [osu-nlp-group/earlyexperience](https://yarkr.com/arks/osu-nlp-group/earlyexperience), so its skills install into Claude Code, Codex, Cursor and other agent harnesses with one command.
+
+### CLI
+
+Install the whole ark, which Yarkr keeps equal to this repo:
+
+```bash
+npx yarkr-cli sync osu-nlp-group/earlyexperience
+```
+
+Or add individual skills:
+
+```bash
+npx yarkr-cli add skill:osu-nlp-group/earlyexperience/early-experience-data
+```
+
+No Node.js? `curl -fsSL https://yarkr.com/install.sh | sh` (macOS, Linux) or `irm https://yarkr.com/install.ps1 | iex` (Windows PowerShell) installs `yarkr` as a standalone binary; then type `yarkr` in place of `npx yarkr-cli`.
+
+### MCP
+
+Connect your agent to the ark over MCP:
+
+```bash
+npx yarkr-cli mcp add osu-nlp-group/earlyexperience
+```
+
+Or point any MCP client at `https://api.yarkr.com/functions/v1/api/mcp/o/osu-nlp-group/earlyexperience`.
+<!-- yarkr:install:end -->
